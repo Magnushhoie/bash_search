@@ -1,5 +1,12 @@
 # bash_search
 
+Installation of dependencies:
+bash setup.sh
+
+Add to .bash_profile or .bashrc:
+source bash_search/fuzzy_commands.sh
+source bash_search/bash_notes.sh
+
 #### 1. bash_notes.sh:
 Bash note-taking system with easy search and editing in place, directly from the terminal using vim. Uses a combination of grep and vim to search a main note file or any file in ~/_References folder.
 
