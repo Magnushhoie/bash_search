@@ -2,17 +2,17 @@
 
 #### 1. bash_notes.sh:
 Bash search and edit note-taking system from the terminal using vim. Uses a combination of grep and vim to search a main note file or any file in ~/_References folder. Commands:
-- ref keywords: Search for keywords in references.txt file
+- ref keywords: Search for keywords in references.txt
 - refv keywords: Search references.txt and open at line in vim
-- refv filename.txt: Create new note-taking file in reference folder
-- **refv_papers keywords: Searches all pdfs in your scientific paper folder for keywords**
-  - Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
-- ref_all keywords: Search for keywords in all files in reference folder (non file-specific)
-- ref_allv keywords: Search content of all files and open any matched file at line in vim
+- refv filename.txt: Create new note file
+- **ref_papers: Searches all pdfs in your scientific paper folder for keywords**
+  - Note: Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
+- ref_all: Search for keywords in all files in reference folder (non file-specific)
+- ref_allv: Search content of all files and open any matched file at line in vim
 
 
 #### 2. fuzzy_commands.sh:
-Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
+Collection of fuzzy search find functions from https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
 Provides extremely fast and powerful fuzzy search with useful commands. E.g. interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes and much more. Some commands:
 - fif keywords (Find In Folder): Search all files in ANY folder for keywords, open in vim
 - fh keyword (Find History): search bash history
