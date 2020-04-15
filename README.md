@@ -1,8 +1,8 @@
 # bash_search
 
 #### 1. bash_notes.sh:
-- Bash note-taking system for easy to use search and editing of note-taking files in reference folder
-- Adds ~/_Reference and ~/_Reference/references.txt in home directory
+Bash note-taking system for easy to use search and editing of note-taking files in reference folder
+Adds ~/_Reference and ~/_Reference/references.txt in home directory
 - ref keywords: Search for keywords in references.txt file
 - refv keywords: Search references.txt and open at line in vim
 - refv filename.txt: Create new note-taking file in reference folder
