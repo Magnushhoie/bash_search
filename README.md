@@ -1,5 +1,8 @@
 # bash_search
 
+Example of use:
+https://terminalizer.com/view/8cb3bbcb3818
+
 Installation of dependencies:
 ```bash
 bash setup.sh
