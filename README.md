@@ -39,10 +39,11 @@ Compiled from https://github.com/junegunn/fzf/wiki/examples and others, with som
 
 Bash fuzzy search commands:
 - fif (Find In Folder): Search all files in ANY folder for keywords, open in vim
-- fh (Find History): search bash history
+- fh (Find BASH History): search bash history
 - fda (Find Directory All): Search for folders in current directory (infinite depth) and interactively change directory
 - fcd (Fancy Change Directory): Interactive cd
 - fkill (Find Kill): Search for all processes, kill selected one
+- fman (Find Manual): Search bash manual
 
 Specific applications:
 - fpdf (Find PDF): Search any text in any pdf in folder, infinite depth
@@ -52,10 +53,7 @@ Specific applications:
 - fb (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
    - Easily set-up using: pip3 install --user buku; buku --suggest --ai
    - https://github.com/jarun/buku
-
-- fman (Find Manual): Search bash manual
-
-- v (vim last used): Shows last used vim files
+- v (vim last used): Shows / selects last opened vim files
 
 ### 3. setup.sh:
 - Installer for all dependencies. Coded for Mac OSX use.
