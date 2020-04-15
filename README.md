@@ -1,6 +1,6 @@
 # bash_search
 
-Example of use:
+### Example of use:
 
 https://terminalizer.com/view/ef4b2b193819
 
