@@ -7,10 +7,10 @@ Commands:
 - ref keywords: Search for keywords in references.txt
 - refv keywords: Search references.txt and open at line in vim
 - refv filename.txt: Create new note file
-- **ref_papers: Searches all pdfs in your scientific paper folder for keywords**
+- **ref_papers: Interactively searches all pdfs in your scientific paper folder for keywords**
   - Note: Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
 - ref_all: Search for keywords in all files in reference folder (non file-specific)
-- ref_allv: Search content of all files and open any matched file at line in vim
+- ref_allv: Interactively searches content of all files in reference folder and allows editing any matched file at line in vim
 
 
 #### 2. fuzzy_commands.sh:
