@@ -1,5 +1,4 @@
 #!/bin/bash
-source fuzzy_commands.sh
 
 ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers

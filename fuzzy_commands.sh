@@ -137,7 +137,7 @@ history_safari() {
   fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs open
 }
 
-fhist() {
+fbhist() {
   local cols sep
   cols=$(( COLUMNS / 3 ))
   sep='{::}'
@@ -211,9 +211,6 @@ fman() {
     man -k . | fzf -e --prompt='Man> ' | awk '{print $1}' | cut -f1 -d\( | xargs man
 }
 
-
-
-
 # fuzzy grep open via ag with line number
 vg() {
   local file
@@ -226,9 +223,6 @@ vg() {
      vim $file +$line
   fi
 }
-
-
-
 
 fpdf () {
     local open
