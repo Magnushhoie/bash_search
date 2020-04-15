@@ -28,3 +28,6 @@
 
 ### 3. setup.sh: Installer for all dependencies. Coded for Mac OSX use.
 
+### 4. optional files
+- Collection of own .vim and .tmux configurations. Use at own risk...
+
