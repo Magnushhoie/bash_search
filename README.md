@@ -1,12 +1,12 @@
 # bash_search
 
 #### 1. bash_notes.sh:
-- Bash note-taking system for powerful search and editing of notefiles in reference folder:
+- Bash note-taking system for easy to use search and editing of note-taking files in reference folder
 - Adds ~/_Reference and ~/_Reference/references.txt in home directory
 - ref keywords: Search for keywords in references.txt file
 - refv keywords: Search references.txt and open at line in vim
 - refv filename.txt: Create new note-taking file in reference folder
-- refv_papers keywords: Searches all pdfs in your scientific paper folder for keywords
+- **refv_papers keywords: Searches all pdfs in your scientific paper folder for keywords**
   - Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
 - ref_all keywords: Search for keywords in all files in reference folder (non file-specific)
 - ref_allv keywords: Search content of all files and open any matched file at line in vim
@@ -24,7 +24,7 @@
 - fbhist (Find Browser HISTory): Search all browser (Safari/Chrome) history
   - Hard-set paths based on OSX. Change to own directories if want. Should also support firefox
 - fman (Find Manual): Search bash manual
-- fpdf (Find PDF): Search any text in any pdf in folder, infinite depth
+- **fpdf (Find PDF): Search any text in any pdf in folder, infinite depth**
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
 - v (vim last used): Shows last used vim files
 
