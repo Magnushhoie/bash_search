@@ -1,8 +1,7 @@
 # bash_search
 
 #### 1. bash_notes.sh:
-Bash note-taking system for easy to use search and editing of note-taking files in reference folder
-Adds ~/_Reference and ~/_Reference/references.txt in home directory
+Bash search and edit note-taking system from the terminal using vim. Uses a combination of grep and vim to search a main note file or any file in ~/_References folder. Commands:
 - ref keywords: Search for keywords in references.txt file
 - refv keywords: Search references.txt and open at line in vim
 - refv filename.txt: Create new note-taking file in reference folder
@@ -13,7 +12,8 @@ Adds ~/_Reference and ~/_Reference/references.txt in home directory
 
 
 #### 2. fuzzy_commands.sh:
-- Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
+Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
+Provides extremely fast and powerful fuzzy search with useful commands. E.g. interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes and much more. Some commands:
 - fif keywords (Find In Folder): Search all files in ANY folder for keywords, open in vim
 - fh keyword (Find History): search bash history
 - fda keyword (Find Directory All): Search for folders in current directory (infinite depth) and interactively change directory
