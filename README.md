@@ -37,19 +37,24 @@ E.g. **interactively searching and allowing editing of any number of files in a 
 
 Compiled from https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
 
-Commands:
+Bash fuzzy search commands:
 - fif (Find In Folder): Search all files in ANY folder for keywords, open in vim
 - fh (Find History): search bash history
 - fda (Find Directory All): Search for folders in current directory (infinite depth) and interactively change directory
 - fcd (Fancy Change Directory): Interactive cd
 - fkill (Find Kill): Search for all processes, kill selected one
-- fb (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks in buku
-  - Automatically compile using: pip3 install --user buku; buku --sugest --ai
-- fbhist (Find Browser HISTory): Search all browser (Safari/Chrome) history
-  - Hard-set paths based on OSX. Change to own directories if want. Should also support firefox
-- fman (Find Manual): Search bash manual
-- **fpdf (Find PDF): Search any text in any pdf in folder, infinite depth**
+
+Specific applications:
+- fpdf (Find PDF): Search any text in any pdf in folder, infinite depth
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
+- fbhist (Find Browser HISTory): Search your entire browser (Safari/Chrome) history(es)
+  - Hard-set paths based on OSX. Change to own directories if want. Should also support firefox with modification
+- fb (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
+   - Easily set-up using: pip3 install --user buku; buku --suggest --ai
+   - https://github.com/jarun/buku
+
+- fman (Find Manual): Search bash manual
+
 - v (vim last used): Shows last used vim files
 
 ### 3. setup.sh:
