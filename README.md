@@ -1,6 +1,6 @@
 # bash_search
 
-Personal note-taking search and edit system and combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf)
+Personal note-taking with search and edit directly in terminal, with combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf)
 
 ### Example of use:
 
