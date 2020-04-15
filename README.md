@@ -1,7 +1,7 @@
 # bash_search
 
 #### 1. bash_notes.sh:
-Bash search and edit note-taking system from the terminal using vim. Uses a combination of grep and vim to search a main note file or any file in ~/_References folder.
+Bash note-taking system with easy search and editing in place, directly from the terminal using vim. Uses a combination of grep and vim to search a main note file or any file in ~/_References folder.
 
 Commands:
 - ref keywords: Search for keywords in references.txt
@@ -15,7 +15,7 @@ Commands:
 
 #### 2. fuzzy_commands.sh:
 Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands.
-E.g. interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes and much more.
+E.g. **interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes** and much more.
 Compiled rom https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
 
 Commands:
