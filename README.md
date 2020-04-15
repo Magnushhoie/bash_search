@@ -1,6 +1,6 @@
 # bash_search
 
-1. bash_notes.sh: Bash note-taking system for powerful search and editing of notefiles in reference folder:
+## 1. bash_notes.sh: Bash note-taking system for powerful search and editing of notefiles in reference folder:
 - Adds ~/_Reference and ~/_Reference/references.txt in home directory
 - ref keywords: Search for keywords in references.txt file
 - refv keywords: Search references.txt and open at line in vim
@@ -11,7 +11,7 @@
 - ref_allv keywords: Search content of all files and open any matched file at line in vim
 
 
-2. fuzzy_commands.sh: Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
+## 2. fuzzy_commands.sh: Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
 - fif keywords (Find In Folder): Search all files in ANY folder for keywords, open in vim
 - fh keyword (Find History): search bash history
 - fda keyword (Find Directory All): Search for folders in current directory (infinite depth) and interactively change directory
@@ -26,5 +26,5 @@
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
 - v (vim last used): Shows last used vim files
 
-3. setup.sh: Installer for all dependencies. Coded for Mac OSX use.
+## 3. setup.sh: Installer for all dependencies. Coded for Mac OSX use.
 
