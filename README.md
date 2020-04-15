@@ -1,5 +1,7 @@
 # bash_search
 
+Personal note-taking search and edit system and combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf)
+
 ### Example of use:
 
 https://terminalizer.com/view/ef4b2b193819
