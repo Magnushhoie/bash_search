@@ -1,7 +1,8 @@
 # bash_search
 
 Example of use:
-https://terminalizer.com/view/8cb3bbcb3818
+
+https://terminalizer.com/view/ef4b2b193819
 
 Installation of dependencies:
 ```bash
