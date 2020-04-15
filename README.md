@@ -7,9 +7,9 @@
 - refv filename.txt: Create new note-taking file in reference folder
 - refv_papers keywords: Searches all pdfs in your scientific paper folder for keywords
   - Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
-
 - ref_all keywords: Search for keywords in all files in reference folder (non file-specific)
 - ref_allv keywords: Search content of all files and open any matched file at line in vim
+
 
 2. Collection of fuzzy search find functions from: https://github.com/junegunn/fzf/wiki/examples
 - fif keywords (Find In Folder): Search all files in ANY folder for keywords, open in vim
