@@ -1,6 +1,6 @@
 # bash_search
 
-Personal note-taking system with search and edit directly in terminal, with combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interactive with content in any folder.
+Personal reference and note-taking system with search and edit directly in terminal. Includes combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interacting with content in any folder.
 
 ### Example of use:
 
