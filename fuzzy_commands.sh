@@ -7,7 +7,6 @@
 # Control + T search files
 # Escape + C jump to folder
 EDITOR=vim
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 
 fuzzy_commands="${BASH_SOURCE[0]}"
 
@@ -22,32 +21,24 @@ function f_helpv() # Edit (this) fuzzy_commands.sh file
 vim $fuzzy_commands
 }
 
-
+# FZF defaults
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
 export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
 export FZF_COMPLETION_TRIGGER=']]'
-
 # Default command to use when input is tty
 export FZF_DEFAULT_COMMAND="fd --type f --color=always"
-
 # Using bat as previewer 
 export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
-
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
 _fzf_compgen_path() {
   fd --hidden --follow --exclude ".git" . "$1"
 }
-
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
-
-# alternative using ripgrep-all (rga) combined with fzf-tmux preview
-# implementation below makes use of "open" on macOS, which can be replaced by other commands if needed.
-# allows to search in PDFs, E-Books, Office documents, zip, tar.gz, etc. (see https://github.com/phiresky/ripgrep-all)
-# find-in-file - usage: fif <searchTerm> or fif "string with spaces" or fif "regex"
 
 function fsearch() # Interactive Search file contents in folder
 {

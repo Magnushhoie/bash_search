@@ -42,15 +42,27 @@ brew install fasd
 echo -e "\nInstalling tldr, tldr lookup of bash commands"
 pip install --user tldr
 
-echo -e "\nSourcing fuzzy_commands.sh ..."
-source fuzzy_commands.sh
+read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_profile? " -n 1 -r 
+    echo "Adding source to .bash_profile ..."
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+    script_dir=$(dirname ${BASH_SOURCE[0]})
+    source_file=$script_dir/fuzzy_commands.sh
+    LINE=$(echo 'source' $source_file)
+    FILE=$(echo $HOME/test.txt)
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
-echo -e "Adding source to .bash_profile"
-source_file=$PWD/fuzzy_commands.sh
-LINE=$(echo 'source' $source_file)
-FILE=$(echo $HOME/test.txt)
-grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
-echo -e "\nDone!"
+    source_file=$script_dir/bash_notes.sh
+    LINE=$(echo 'source' $source_file)
+    FILE=$(echo $HOME/test.txt)
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+fi
+
+echo "Sourcing script files ..."
+source $script_dir/fuzzy_commands.sh
+source $script_dir/bash_notes.sh
+
+echo "Done!"
 
 
 #echo -e "\nInstalling academic references fuzzy search"

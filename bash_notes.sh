@@ -5,7 +5,7 @@ mkdir -p ref_folder
 
 local_name=$(uname -a | awk '{print $2}')
 local_folder=$ref_folder/$local_name
-bash_notes="${BASH_SOURCE[0]}"
+bash_notes="$(realpath ${BASH_SOURCE[0]})"
 
 function ref_help() # Show all functions in bash_notes.sh
 {
