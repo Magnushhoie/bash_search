@@ -20,7 +20,7 @@ brew install fzf
 
 echo -e "\nInstalling dependencies ..."
 #Ensure updated
-brew install vim less bat ripgrep rga diff-so-fancy fzy fasd
+brew install fd vim less bat ripgrep rga diff-so-fancy fzy fasd
 
 #echo -e "\nInstalling buku, safari/chrome/firefox browser bookmark search"
 # Search bookmarks from safari, chrome, firefox...

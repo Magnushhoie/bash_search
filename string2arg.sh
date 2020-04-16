@@ -1,6 +1,4 @@
 #!/bin/bash
-string2arg_file=$(realpath "${BASH_SOURCE[0]}")
-
 string2arg() {
     export arg_filename=$(cut -d":" -f1 <<< $1);
     export arg_linenum=$(cut -d":" -f2 <<< $1);

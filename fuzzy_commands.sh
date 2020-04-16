@@ -9,6 +9,7 @@
 EDITOR=vim
 
 fuzzy_commands="${BASH_SOURCE[0]}"
+string2arg_file="$(dirname ${BASH_SOURCE[0]})"
 
 function f_help () # Show list of commands
 {
@@ -31,7 +32,7 @@ export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
 export FZF_COMPLETION_TRIGGER=']]'
 # Default command to use when input is tty
 export FZF_DEFAULT_COMMAND="fd --type f --color=always"
-# Using bat as previewer 
+# Using bat as previewer
 export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
@@ -47,10 +48,21 @@ function fsearch() # Interactive Search file contents in folder
 {
 search_terms=${@:-"."}
 local vfile
-export vfile=$(rg -m 100000 --max-depth 10 -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
-if [[ $vfile ]]; 
+export vfile=$(rg -m 100000 --max-depth 10 -n -g --ignore-case "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+if [[ $vfile ]];
    then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
-fi  
+fi
+}
+
+
+function fsearch2() # Interactive Search file contents in folder
+{
+search_terms=${@:-"."}
+local vfile
+export vfile=$(rg -m 100000 --max-depth 10 -n -g --ignore-case "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+if [[ $vfile ]];
+   then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
+fi
 }
 
 function fif() # Find in Folder: Search file contents, only show matching file once
