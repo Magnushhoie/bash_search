@@ -9,7 +9,7 @@
 EDITOR=vim
 
 fuzzy_commands="${BASH_SOURCE[0]}"
-string2arg_file="$(dirname ${BASH_SOURCE[0]})"
+string2arg_file="$(dirname ${BASH_SOURCE[0]})"/string2arg.sh
 
 function f_help () # Show list of commands
 {
@@ -48,29 +48,29 @@ function fsearch() # Interactive Search file contents in folder
 {
 search_terms=${@:-"."}
 local vfile
-export vfile=$(rg -m 100000 --max-depth 10 -n -g --ignore-case "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+export vfile=$(rg -m 100000 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
 if [[ $vfile ]];
    then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
 fi
 }
-
 
 function fsearch2() # Interactive Search file contents in folder
 {
 search_terms=${@:-"."}
 local vfile
-export vfile=$(rg -m 100000 --max-depth 10 -n -g --ignore-case "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+export vfile=$(rg -m 100000 --max-count=1 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
 if [[ $vfile ]];
    then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
 fi
 }
+
 
 function fif() # Find in Folder: Search file contents, only show matching file once
 {
 search_terms=${@:-" "}
     if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
     local file
-    file=$(rga --max-count=1 --max-depth 10 --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
+    file=$(rga --max-count=1 --max-depth 2 --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
 }
 
 function fcd() # Interactive change-directory with fzf
