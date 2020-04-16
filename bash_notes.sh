@@ -1,12 +1,25 @@
 #!/bin/bash
-
 ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers
 mkdir -p ref_folder
+
 local_name=$(uname -a | awk '{print $2}')
 local_folder=$ref_folder/$local_name
+bash_notes="${BASH_SOURCE[0]}"
 
-ref_get_notefile() {
+function ref_help() # Show all functions in bash_notes.sh
+{
+echo $(realpath $bash_notes)
+grep --color=always "^function " $bash_notes
+}
+
+function ref_helpv() # Edit bash_notes.sh
+{
+vim $bash_notes
+}
+
+ref_get_notefile() # Helper function for ref functions
+{
 # Searches note folder for notefile. Default is references.txt
 # Alternative name given if first argument matches that basename excluding file extension
 # New filename given if first argument ends in .txt
@@ -48,27 +61,32 @@ ref_get_notefile() {
 
 search_file() {
 filename=$1
-  grep -i -B 30 -A 30 --color=always "$2" "$filename" |
-  grep -i -B 30 -A 30 --color=always "$3" |
-  grep -i -B 30 -A 30 --color=always "$4" |
-  grep -i -B 30 -A 30 --color=always "$5" |
-  grep -i -B 30 -A 30 --color=always "$6" |
-  less -r
+  rg --pretty --no-line-number -B 8 -A 20 $2 "$filename" |
+  rg --pretty --no-line-number -B 4 -A 10 "$2" |
+  rg --pretty --no-line-number -B 4 -A 10 "$3" |
+  rg --pretty --no-line-number -B 4 -A 10 "$4" |
+  rg --pretty --no-line-number -B 4 -A 10 "$5" |
+  rg --pretty --no-line-number -B 4 -A 10 "$6" |
+  less -R
 }
+
 
 search_folder() {
 folder=$1
 script_files=($(find $folder -type f -not -path '*/\.*'))
+
 { for file in ${script_files[@]}; do
-    grep -I -i -n -B 10 -A 30 --color=always $2 $file /dev/null; done } |
-        grep -i -B 30 -A 30 --color=always "$2" |
-        grep -i -B 30 -A 30 --color=always "$3" |
-        grep -i -B 30 -A 30 --color=always "$4" |
-        grep -i -B 30 -A 30 --color=always "$5" |
-        less -r
+    rg --pretty --no-line-number -i -B 8 -A 20 $2 $file /dev/null;  done } |
+rg --pretty --no-line-number -i -B 4 -A 10 "$2" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$3" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$4" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$5" |
+rg --pretty --no-line-number -B 4 -A 10 "$6" |
+less -R
 }
 
-ref() {
+function ref() # Search references.txt
+{
     filename=$(ref_get_notefile)
 
      # Check for alternative filename as first argument
@@ -83,7 +101,8 @@ ref() {
      search_file $filename $@
 }
 
-refv() {
+function refv() # Search and edit references.txt in vim
+{
 # Opens up vim at first mention of keyword(s)
 # Notefile is references.txt, unless another file found from first argument
      filename=$(ref_get_notefile)
@@ -116,47 +135,29 @@ refv() {
     fi
 }
 
-refv_all() {
+function ref_fsearch() # Search and edit all reference files in Vim
+{
 current_dir=$PWD
 # Use fuzzy search in folder from fuzzy_commands
 cd $ref_folder
-fif "$@"
+fsearch "$@"
 cd $current_dir
 }
 
-ref_all () {
+function ref_all() # Search all reference files
+{
 notefile="$HOME/_References/references.txt"
 folder=$(dirname $notefile)
 script_files=($(find $folder -type f -not -path '*/\.*'))
 
-{ for file in ${script_files[@]}; do
-    grep -i -B 10 -A 100 --color=always $1 $file; done } |
-        grep -i -B 30 -A 100 --color=always "$2" |
-        grep -i -B 30 -A 100 --color=always "$3" |
-        grep -i -B 30 -A 100 --color=always "$4" |
-        grep -i -B 30 -A 100 --color=always "$5" |
-        less -r
+search_folder $folder $@
 }
 
-ref_papers() {
+function ref_papers() # Search all PDFs in paper folder (hardcoded)
+{
 current_dir=$PWD
 # Use fuzzy search in folder from fuzzy_commands
 cd $papers_folder
-fpdf $@
+f_pdf $@
 cd $current_dir
-}
-
-ref_pdfs_all() {
-current_dir=$PWD
-cd $HOME
-fpdf $@
-cd $current_dir
-}
-
-vbp() {
-vim $HOME/.bash_profile
-}
-
-lbp() {
-less $HOME/.bash_profile
 }
