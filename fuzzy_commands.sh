@@ -21,6 +21,9 @@ function f_helpv() # Edit (this) fuzzy_commands.sh file
 vim $fuzzy_commands
 }
 
+# ripgrep defaults. Change this to allow deeper searches
+export rg="rg --max-count 1000000 --max-depth 10 --max-filesize 1M"
+
 # FZF defaults
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
@@ -44,7 +47,7 @@ function fsearch() # Interactive Search file contents in folder
 {
 search_terms=${@:-"."}
 local vfile
-export vfile=$(rg -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+export vfile=$(rg -m 100000 --max-depth 10 -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
 if [[ $vfile ]]; 
    then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
 fi  
@@ -55,7 +58,7 @@ function fif() # Find in Folder: Search file contents, only show matching file o
 search_terms=${@:-" "}
     if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
     local file
-    file=$(rga --max-count=1 --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
+    file=$(rga --max-count=1 --max-depth 10 --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
 }
 
 function fcd() # Interactive change-directory with fzf
