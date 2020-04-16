@@ -70,7 +70,7 @@ function fif() # Find in Folder: Search file contents, only show matching file o
 search_terms=${@:-" "}
     if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
     local file
-    file=$(rga --max-count=1 --max-depth 2 --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
+    file=$(rga --max-count=1 --max-depth 2 --max-filesize 10K --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
 }
 
 function fcd() # Interactive change-directory with fzf
