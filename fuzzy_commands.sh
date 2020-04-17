@@ -6,6 +6,7 @@
 # Control + r search bash history
 # Control + T search files
 # Escape + C jump to folder
+
 EDITOR=vim
 echo "sourced"
 fuzzy_commands="${BASH_SOURCE[0]}"
@@ -16,10 +17,14 @@ trans="$source_folder/trans"
 function f_help () # Show list of commands
 {
 echo $(realpath $fuzzy_commands)
+echo "Shortcuts:"
+echo "Control + r search bash history"
+echo "Control + T search files"
+echo "Escape + C jump to folder"
 grep --color=always "^function " $fuzzy_commands
 }
 
-function f_helpv() # Edit (this) fuzzy_commands.sh file
+f_helpv() # Edit (this) fuzzy_commands.sh file
 {
 vim $fuzzy_commands
 }
@@ -242,7 +247,7 @@ function f_word() # Dictionary search for english words
 }
 
 
-function f_file_sizes2 ()
+function f_file_sizes ()
 {
 #
 # Bash find total file size of each type of extension in folder
@@ -258,11 +263,11 @@ find . -name '?*.*' -type f -print0 |
         printf "%15d %4d %s\n",  $s{$_}<<9, $n{$_}, $_;
       }
     }' | numfmt --to=iec-i --suffix=B | tail -r |
-    fzf -e --preview="source $string2arg_file; string2arg_filesize {}"
+    fzf -e --preview="source $string2arg_file; string2arg_filesize {} "
 
 }
 
-function f_file_sizes ()
-{
-du -ch `find . -type f -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
-}
+#function f_file_sizes ()
+#{
+#du -ch `find . -type f -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
+#}

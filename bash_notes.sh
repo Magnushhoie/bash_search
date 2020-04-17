@@ -18,7 +18,7 @@ echo $(realpath $bash_notes)
 grep --color=always "^function " $bash_notes
 }
 
-function ref_helpv() # Edit bash_notes.sh
+ref_helpv() # Edit bash_notes.sh
 {
 vim $bash_notes
 }
@@ -101,6 +101,7 @@ rg --pretty --no-line-number -i -B 4 -A 10 "$5" |
 rg --pretty --no-line-number -B 4 -A 10 "$6" |
 less -R
 }
+
 function ref() # Search references.txt
 {
     filename=$(ref_get_notefile)
@@ -151,7 +152,7 @@ function refv() # Search and edit references.txt in vim
     fi
 }
 
-function ref_fsearch() # Search and edit all reference files in Vim
+function ref_fsearch() # Interactive search and edit all reference files in Vim
 {
 current_dir=$PWD
 # Use fuzzy search in folder from fuzzy_commands
@@ -168,17 +169,17 @@ fif "$@"
 cd $current_dir
 }
 
-function ref_notes() # Search all reference files
+function ref_notes() # Search all files in top level directory _References
 {
 search_folder_top_only $ref_folder ${@:-"\s"}
 }
 
-function ref_all() # Search all reference files
+function ref_all() # Search all files in _References, recursively
 {
 search_folder $ref_folder ${@:-"\s"}
 }
 
-function ref_papers() # Search all PDFs in paper folder (hardcoded)
+function ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS_TEXT (ref_add_pdfs ~/_References/PDF_PAPERS_TEXT)
 {
 CURRENT_DIR=$PWD
 PDF_FOLDER=$PDF_PAPERS_TEXT_FOLDER
@@ -196,7 +197,7 @@ cd $CURRENT_DIR
 }
 
 
-function ref_pdfs()
+function ref_pdfs() # Search all PDFs -> txt added to _References/PDF_TEXT (ref_add_pdfs)
 {
 CURRENT_DIR=$PWD
 PDF_FOLDER=$PDF_TEXT_FOLDER
@@ -213,7 +214,7 @@ open $pdf_file
 cd $CURRENT_DIR
 }
 
-function ref_pdfs_fsearch()
+function ref_pdfs_fsearch() # Interactive search all PDFs -> txt added to _References/PDF_TEXT
 {
 CURRENT_DIR=$PWD
 PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
@@ -225,7 +226,7 @@ cd $CURRENT_DIR
 }
 
 
-ref_add_pdfs() # Find all PDFs in folder and process into txt into PDF_TEXT or other output folder
+function ref_add_pdfs() # Process all PDFs in folder (recursively) into txt into PDF_TEXT or specified output folder. Required for ref_pdfs or ref_papers
 {
 #INDIR=${1:-'.'}
 PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
@@ -257,17 +258,3 @@ for file in "${files[@]}"; do
          fi
     fi; done
 }
-
-
-#bash rename remove all spaces in filenames and foldernames
-#find . -name "* *" -type d | rename 's/ /_/g'   find . -name "* *" -type f | rename 's/ /_/g'
-
-
-#OUTDIR=$HOME/temp/test_pdf
-#ref_add_pdfs() # Processes pdfs into txt in cache folder, for searching
-#{
-#find . -name "*.pdf" -exec pdftotext {} $OUTDIR \;
-#}
-
-
-#find /original -name "*.processme" -print0 | xargs -0 cp -s --target-directory=.

@@ -19,14 +19,13 @@ string2arg() {
 
 function string2arg_filesize() {
   filename=$(echo $@ | awk '{print $3}')
-  echo $filename
-  source "${BASH_SOURCE[0]}"
-  test_function $filename
+  echo .$filename:
+  fd ".+\.$filename$"
 }
 
 # | xargs test_function {}
 
-function test_function ()
-{
-du -ch `find . -name "$1"` | sort -rh
-}
+#function test_function ()
+#{
+#du -ch `find . -name "$1"` | sort -rh
+#}
