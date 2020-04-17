@@ -1,6 +1,7 @@
 #!/bin/bash
 ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers
+PDF_TEXT=$HOME/_References/PDF_TEXT
 mkdir -p ref_folder
 
 local_name=$(uname -a | awk '{print $2}')
@@ -161,3 +162,34 @@ cd $papers_folder
 f_pdf $@
 cd $current_dir
 }
+
+function ref_pdfs_fsearch()
+{
+cd $PDF_TEXT
+fsearch $@
+cd $current_dir
+}
+
+function ref_pdfs_fif()
+{
+cd $PDF_TEXT
+fif $@
+cd $current_dir
+}
+
+ref_add_pdfs()
+{
+  # Find all PDFs in folder and convert to txt in PDF_TEXT folder
+fd ".pdf$" --exec pdftotext {} $PDF_TEXT/{/}.txt
+#bash rename remove all spaces in filenames and foldernames
+#find . -name "* *" -type d | rename 's/ /_/g'   find . -name "* *" -type f | rename 's/ /_/g'
+}
+
+#OUTDIR=$HOME/temp/test_pdf
+#ref_add_pdfs() # Processes pdfs into txt in cache folder, for searching
+#{
+#find . -name "*.pdf" -exec pdftotext {} $OUTDIR \;
+#}
+
+
+#find /original -name "*.processme" -print0 | xargs -0 cp -s --target-directory=.

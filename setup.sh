@@ -32,10 +32,15 @@ brew install fd vim less bat ripgrep rga diff-so-fancy fzy fasd
 # DevDocs for offline documentation lookup
 #brew cask install devdocs
 
+
+# Dictionary look-up and translate
+wget git.io/trans
+chmod +x ./trans
+
 echo -e "\nInstalling tldr, tldr lookup of bash commands"
 pip install --user tldr
 
-read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_profile? " -n 1 -r 
+read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_profile? " -n 1 -r
     echo "Adding source to .bash_profile ..."
     if [[ $REPLY =~ ^[Yy]$ ]]
     then

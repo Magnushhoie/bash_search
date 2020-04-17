@@ -9,7 +9,9 @@
 EDITOR=vim
 
 fuzzy_commands="${BASH_SOURCE[0]}"
-string2arg_file="$(dirname ${BASH_SOURCE[0]})"/string2arg.sh
+source_folder="$(dirname ${BASH_SOURCE[0]})"
+string2arg_file="$source_folder/string2arg.sh"
+trans="$source_folder/trans"
 
 function f_help () # Show list of commands
 {
@@ -50,6 +52,7 @@ search_terms=${@:-"."}
 local vfile
 export vfile=$(rg -m 100000 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
 if [[ $vfile ]];
+   echo $vfile
    then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
 fi
 }
@@ -239,4 +242,10 @@ function f_v() #open last used vim files in ~/.viminfo
   if [[ -n $files ]]; then
       vim ${files//\~/$HOME}
   fi
+}
+
+function f_word() # Dictionary search for english words
+{
+  cat /usr/share/dict/words | rg -i -e ${1:-"."} | fzf | trans -d |head -n 15
+
 }
