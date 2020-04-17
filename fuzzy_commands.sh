@@ -251,7 +251,7 @@ function f_file_sizes ()
 {
 #
 # Bash find total file size of each type of extension in folder
-find . -name '?*.*' -type f -print0 |
+find . -maxdepth ${1:-1} -name '?*.*' -type f -print0 |
   perl -0ne '
     if (@s = stat$_){
       ($ext = $_) =~ s/.*\.//s;
