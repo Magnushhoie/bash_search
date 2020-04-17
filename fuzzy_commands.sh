@@ -270,8 +270,7 @@ find . -name '?*.*' -type f -print0 |
 
 }
 
-
 function f_file_sizes ()
 {
-du -ch `find . -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
+du -ch `find . -type f -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
 }
