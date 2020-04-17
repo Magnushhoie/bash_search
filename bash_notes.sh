@@ -1,7 +1,11 @@
 #!/bin/bash
 ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers
-PDF_TEXT=$HOME/_References/PDF_TEXT
+
+notefile=$ref_folder/references.txt
+PDF_TEXT_FOLDER=$ref_folder/PDF_TEXT
+PDF_PAPERS_TEXT_FOLDER=$ref_folder/PDF_PAPERS_TEXT
+
 mkdir -p ref_folder
 
 local_name=$(uname -a | awk '{print $2}')
@@ -27,12 +31,10 @@ ref_get_notefile() # Helper function for ref functions
 # List of available files given if first argument is "list"
 
     # Modify these three to change default file or folder
-    notefile="$HOME/_References/references.txt"
     firstword=${1:-"references"}
 
     # Search for .txt files in reference folder
-    folder=$(dirname $notefile)
-    files=($folder/*.txt)
+    files=($ref_folder/*.txt)
 
     # Look for alternative notefiles in folder if matches first argument
     for file in ${files[*]}; do
@@ -86,6 +88,19 @@ rg --pretty --no-line-number -B 4 -A 10 "$6" |
 less -R
 }
 
+search_folder_top_only() {
+folder=$1
+script_files=($(find $folder -maxdepth 1 -type f -not -path '*/\.*'))
+
+{ for file in ${script_files[@]}; do
+    rg --pretty --no-line-number -i -B 8 -A 20 $2 $file /dev/null;  done } |
+rg --pretty --no-line-number -i -B 4 -A 10 "$2" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$3" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$4" |
+rg --pretty --no-line-number -i -B 4 -A 10 "$5" |
+rg --pretty --no-line-number -B 4 -A 10 "$6" |
+less -R
+}
 function ref() # Search references.txt
 {
     filename=$(ref_get_notefile)
@@ -99,7 +114,7 @@ function ref() # Search references.txt
      fi
 
      echo $filename
-     search_file $filename $@
+     search_file $filename ${@:-"\s"}
 }
 
 function refv() # Search and edit references.txt in vim
@@ -145,45 +160,108 @@ fsearch "$@"
 cd $current_dir
 }
 
+ref_fif()
+{
+current_dir=$PWD
+cd $ref_folder
+fif "$@"
+cd $current_dir
+}
+
+function ref_notes() # Search all reference files
+{
+search_folder_top_only $ref_folder ${@:-"\s"}
+}
+
 function ref_all() # Search all reference files
 {
-notefile="$HOME/_References/references.txt"
-folder=$(dirname $notefile)
-script_files=($(find $folder -type f -not -path '*/\.*'))
-
-search_folder $folder $@
+search_folder $ref_folder ${@:-"\s"}
 }
 
 function ref_papers() # Search all PDFs in paper folder (hardcoded)
 {
-current_dir=$PWD
-# Use fuzzy search in folder from fuzzy_commands
-cd $papers_folder
-f_pdf $@
-cd $current_dir
+CURRENT_DIR=$PWD
+PDF_FOLDER=$PDF_PAPERS_TEXT_FOLDER
+cd $PDF_FOLDER
+
+search_terms=${@:-"\s"}
+if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+local file
+file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
+ fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
+pdf_file=${file::${#file}-4}
+open $pdf_file
+
+cd $CURRENT_DIR
+}
+
+
+function ref_pdfs()
+{
+CURRENT_DIR=$PWD
+PDF_FOLDER=$PDF_TEXT_FOLDER
+cd $PDF_FOLDER
+
+search_terms=${@:-"\s"}
+if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+local file
+file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
+ fzf-tmux -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
+pdf_file=${file::${#file}-4}
+open $pdf_file
+
+cd $CURRENT_DIR
 }
 
 function ref_pdfs_fsearch()
 {
-cd $PDF_TEXT
-fsearch $@
-cd $current_dir
-}
+CURRENT_DIR=$PWD
+PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
+cd $PDF_FOLDER
 
-function ref_pdfs_fif()
-{
-cd $PDF_TEXT
 fif $@
-cd $current_dir
+
+cd $CURRENT_DIR
 }
 
-ref_add_pdfs()
+
+ref_add_pdfs() # Find all PDFs in folder and process into txt into PDF_TEXT or other output folder
 {
-  # Find all PDFs in folder and convert to txt in PDF_TEXT folder
-fd ".pdf$" --exec pdftotext {} $PDF_TEXT/{/}.txt
+#INDIR=${1:-'.'}
+PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
+echo "Outputting PDF -> txt in" $PDF_FOLDER
+mkdir -p $PDF_FOLDER
+# Find all PDFs in folder and convert to txt in PDF_TEXT_FOLDER folder
+#fd ".pdf$" --exec pdftotext {} $PDF_TEXT_FOLDER/{/}.txt
+#files=$(fd ".pdf$")
+#for file in ${files[@]}; do
+
+IFS=$'\n' read -r -d '' -a files < <(fd ".pdf$")
+for file in "${files[@]}"; do
+
+    # Check that file has valid characters
+    if [[ "$file" =~ [a-zA-Z0-9] ]]; then
+        # Replace spaces in new filename
+        newfile=$(basename $file)
+        newfile=$(echo "$newfile" | sed -e 's/ /_/g')
+
+        # Check if spaces-replaced filename is already present (processed)
+        if [ $(fd ^"$newfile".txt$ "$PDF_FOLDER") ]; then
+          echo "Already present! :" "$newfile"
+
+        # Convert pdf to txt for easy searching with fsearch
+        else
+          echo "Adding ..." "$file"
+          cp "$file" $PDF_FOLDER/"$newfile"
+          pdftotext "$file" $PDF_FOLDER/"$newfile".txt #2>/dev/null
+         fi
+    fi; done
+}
+
+
 #bash rename remove all spaces in filenames and foldernames
 #find . -name "* *" -type d | rename 's/ /_/g'   find . -name "* *" -type f | rename 's/ /_/g'
-}
+
 
 #OUTDIR=$HOME/temp/test_pdf
 #ref_add_pdfs() # Processes pdfs into txt in cache folder, for searching

@@ -51,29 +51,20 @@ function fsearch() # Interactive Search file contents in folder
 search_terms=${@:-"."}
 local vfile
 export vfile=$(rg -m 100000 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
-if [[ $vfile ]];
-   echo $vfile
-   then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
+if [[ "$vfile" =~ [a-zA-Z0-9] ]];
+#if [[ -z "$vfile" ]];
+   then echo $vfile
+   vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
 fi
 }
-
-function fsearch2() # Interactive Search file contents in folder
-{
-search_terms=${@:-"."}
-local vfile
-export vfile=$(rg -m 100000 --max-count=1 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
-if [[ $vfile ]];
-   then vim +$(cut -d":" -f2 <<< $vfile) $(cut -d":" -f1 <<< $vfile)
-fi
-}
-
 
 function fif() # Find in Folder: Search file contents, only show matching file once
 {
-search_terms=${@:-" "}
+search_terms=${@:-"\s"}
     if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
     local file
-    file=$(rga --max-count=1 --max-depth 2 --max-filesize 10K --ignore-case --files-with-matches --no-messages "$search_terms" | fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 $@ {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file"
+    file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
+     fzf-tmux -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file" && echo $(realpath $file)
 }
 
 function fcd() # Interactive change-directory with fzf
@@ -105,10 +96,11 @@ function fh() # Find BASH History: Fuzzy search bash history
 function f_filenames() # Fuzzy search filenames, preview content and open in vim
 {
     local file=$(
-      fzf --query="$1" --no-multi --select-1 --exit-0 \
+      fzf -e --query="$1" --no-multi --select-1 --exit-0 \
           --preview 'bat --color=always --line-range :500 {}'
       )
     if [[ -n $file ]]; then
+        realpath "$file"
         $EDITOR "$file"
     fi
 }
@@ -116,7 +108,7 @@ function f_filenames() # Fuzzy search filenames, preview content and open in vim
 function f_folders() # Fuzzy search all subdirectories and cd
 {
   local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf -e +m --preview 'ls {}') && cd "$dir"
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf -e +m --preview 'ls {}') && cd "$dir" && realpath "$dir"
 }
 
 function f_git_log() # Interactive look at git log
