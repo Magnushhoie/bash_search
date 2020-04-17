@@ -12,6 +12,21 @@ string2arg() {
     bat --color=always --highlight-line $arg_linenum --style=header,grid,numbers --line-range $min:$max $arg_filename;
 }
 
-export FZF_DEFAULT_COMMAND="fd --type file --color=always"
-export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
-export FZF_COMPLETION_TRIGGER=']]'
+#function test_function ()
+#{
+#du -ch `find . -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
+#}
+
+function string2arg_filesize() {
+  filename=$(echo $@ | awk '{print $3}')
+  echo $filename
+  source "${BASH_SOURCE[0]}"
+  test_function $filename
+}
+
+# | xargs test_function {}
+
+function test_function ()
+{
+du -ch `find . -name "$1"` | sort -rh
+}

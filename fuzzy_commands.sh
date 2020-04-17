@@ -7,7 +7,7 @@
 # Control + T search files
 # Escape + C jump to folder
 EDITOR=vim
-
+echo "sourced"
 fuzzy_commands="${BASH_SOURCE[0]}"
 source_folder="$(dirname ${BASH_SOURCE[0]})"
 string2arg_file="$source_folder/string2arg.sh"
@@ -247,5 +247,31 @@ function f_v() #open last used vim files in ~/.viminfo
 function f_word() # Dictionary search for english words
 {
   cat /usr/share/dict/words | rg -i -e ${1:-"."} | fzf | trans -d |head -n 15
+}
 
+
+function f_file_sizes2 ()
+{
+#
+# Bash find total file size of each type of extension in folder
+find . -name '?*.*' -type f -print0 |
+  perl -0ne '
+    if (@s = stat$_){
+      ($ext = $_) =~ s/.*\.//s;
+      $s{$ext} += $s[12];
+      $n{$ext}++;
+    }
+    END {
+      for (sort{$s{$a} <=> $s{$b}} keys %s) {
+        printf "%15d %4d %s\n",  $s{$_}<<9, $n{$_}, $_;
+      }
+    }' | numfmt --to=iec-i --suffix=B | tail -r |
+    fzf -e --preview="source $string2arg_file; string2arg_filesize {}"
+
+}
+
+
+function f_file_sizes ()
+{
+du -ch `find . -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
 }
