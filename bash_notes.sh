@@ -48,7 +48,7 @@ ref_get_notefile() # Helper function for ref functions
     # First check lengths greater or equal than 4 to prevent error
     if [ ${#firstword} -ge 4 ];
         then if [ ${firstword: -4} = ".txt" ];
-            then notefile=$folder/$firstword
+            then notefile=$ref_folder/$firstword
         fi
     fi
 
@@ -76,7 +76,7 @@ filename=$1
 
 search_folder() {
 folder=$1
-script_files=($(find $folder -type f -not -path '*/\.*'))
+script_files=($(find $ref_folder -type f -not -path '*/\.*'))
 
 { for file in ${script_files[@]}; do
     rg --pretty --no-line-number -i -B 8 -A 20 $2 $file /dev/null;  done } |
@@ -90,7 +90,7 @@ less -R
 
 search_folder_top_only() {
 folder=$1
-script_files=($(find $folder -maxdepth 1 -type f -not -path '*/\.*'))
+script_files=($(find $ref_folder -maxdepth 1 -type f -not -path '*/\.*'))
 
 { for file in ${script_files[@]}; do
     rg --pretty --no-line-number -i -B 8 -A 20 $2 $file /dev/null;  done } |
@@ -257,4 +257,20 @@ for file in "${files[@]}"; do
           pdftotext "$file" $PDF_FOLDER/"$newfile".txt #2>/dev/null
          fi
     fi; done
+}
+
+function rename_files_remove_spaces() {
+find . -name "* *" -type d
+find . -name "* *" -type f
+echo "Will rename all shown files/folders above by replacing spaces with _"
+echo "(if empty, no renames will occur)"
+read -p "Are you sure (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Renaming ..."
+        find . -name "* *" -type d | rename 's/ /_/g'    # do the directories first
+        find . -name "* *" -type f | rename 's/ /_/g'
+else
+        echo "Aborted"
+fi
 }

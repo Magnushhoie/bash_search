@@ -262,7 +262,7 @@ find . -maxdepth ${1:-1} -name '?*.*' -type f -print0 |
       for (sort{$s{$a} <=> $s{$b}} keys %s) {
         printf "%15d %4d %s\n",  $s{$_}<<9, $n{$_}, $_;
       }
-    }' | numfmt --to=iec-i --suffix=B | tail -r |
+    }' | numfmt --to=iec-i --suffix=B | tac |
     fzf -e --preview="source $string2arg_file; string2arg_filesize {} "
 
 }
