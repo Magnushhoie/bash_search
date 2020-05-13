@@ -2,11 +2,14 @@
 ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers
 
-notefile=$ref_folder/references.txt
-PDF_TEXT_FOLDER=$ref_folder/PDF_TEXT
-PDF_PAPERS_TEXT_FOLDER=$ref_folder/PDF_PAPERS_TEXT
-
-mkdir -p ref_folder
+notefile="$ref_folder/references.txt"
+PDF_TEXT_FOLDER="$ref_folder/pdfs/pdf_text"
+#PDF_PAPERS_TEXT_FOLDER="$ref_folder/pdfs/paper_library"
+PDF_PAPERS_FOLDER="/Users/admin/Library/Application Support/Mendeley Desktop/Downloaded"
+PDF_PAPERS_DOWNLOAD_FOLDER="$ref_folder/pdfs/paper_download"
+mkdir -p "$ref_folder"
+#mkdir -p "$PDF_FOLDER"
+mkdir -p "$PDF_PAPERS_DOWNLOAD_FOLDER"
 
 local_name=$(uname -a | awk '{print $2}')
 local_folder=$ref_folder/$local_name
@@ -179,82 +182,88 @@ function ref_all() # Search all files in _References, recursively
 search_folder $ref_folder ${@:-"\s"}
 }
 
-function ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS_TEXT (ref_add_pdfs ~/_References/PDF_PAPERS_TEXT)
-{
-CURRENT_DIR=$PWD
-PDF_FOLDER=$PDF_PAPERS_TEXT_FOLDER
-cd $PDF_FOLDER
 
+function get_pdfs() # Search all PDFs -> txt added to _References/PDF_ (ref_add_pdfs)
+{
+PDF_FOLDER=${1:-"$PDF_FOLDER"}
+shift
 search_terms=${@:-"\s"}
+echo "$PDF_FOLDER"
+echo "$search_terms"      
 if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
 local file
-file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
- fzf-tmux +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
-pdf_file=${file::${#file}-4}
-open $pdf_file
+#file=$(rga --max-count=1 --max-depth 2 --sort modified --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" "$PDF_FOLDER" |
+# fzf-tmux --delimiter / --with-nth -1 -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}") && echo "$file" && pdf_file=${file::${#file}-4} && open "$pdf_file"
+file=$(rga --max-count=1 --max-depth 2 --sort modified --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" "$PDF_FOLDER" |
+ fzf-tmux --delimiter / --with-nth -1 -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
 
-cd $CURRENT_DIR
+# Check if valid file and open
+if [[ "$file" == *.* ]]; then
+        if [[ "$file" == *.pdf.txt  ]]; then
+                file=${file::${#file}-4}
+        fi
+        echo "$file" && open "$file"
+fi
+
+pdf_file=${file::${#file}-4}
+#if [[ -z "$file" ]]; then
+#        echo "$file"
+#        open "$file"
+#fi
 }
 
-
-function ref_pdfs() # Search all PDFs -> txt added to _References/PDF_TEXT (ref_add_pdfs)
+function ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS (ref_add_pdfs ~/_References/PDF_PAPERS)
 {
-CURRENT_DIR=$PWD
-PDF_FOLDER=$PDF_TEXT_FOLDER
-cd $PDF_FOLDER
+get_pdfs "$PDF_PAPERS_FOLDER" "$@"
+}
 
-search_terms=${@:-"\s"}
-if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
-local file
-file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
- fzf-tmux -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
-pdf_file=${file::${#file}-4}
-open $pdf_file
-
-cd $CURRENT_DIR
+function ref_papers_download()
+{
+get_pdfs "$PDF_PAPERS_DOWNLOAD_FOLDER" "$@"
 }
 
 function ref_pdfs_fsearch() # Interactive search all PDFs -> txt added to _References/PDF_TEXT
 {
-CURRENT_DIR=$PWD
-PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
-cd $PDF_FOLDER
+CURRENT_DIR="$PWD"
+PDF_FOLDER=${1:-"$PDF_FOLDER"}
+cd "$PDF_FOLDER"
 
 fif $@
 
-cd $CURRENT_DIR
+cd "$CURRENT_DIR"
 }
 
-
-function ref_add_pdfs() # Process all PDFs in folder (recursively) into txt into PDF_TEXT or specified output folder. Required for ref_pdfs or ref_papers
+function ref_add_pdfs() # Process all PDFs in folder (recursively) into txt into PDF_ or specified output folder. Required for ref_pdfs or ref_papers
 {
 #INDIR=${1:-'.'}
-PDF_FOLDER=${1:-$PDF_TEXT_FOLDER}
-echo "Outputting PDF -> txt in" $PDF_FOLDER
-mkdir -p $PDF_FOLDER
-# Find all PDFs in folder and convert to txt in PDF_TEXT_FOLDER folder
-#fd ".pdf$" --exec pdftotext {} $PDF_TEXT_FOLDER/{/}.txt
+INPUT_PDF_FOLDER=${1:-"$PWD"}
+OUTPUT_PDF_FOLDER=${2:-"$PDF_FOLDER"}
+echo "Reading files from" $INPUT_PDF_FOLDER
+echo "Outputting PDF -> txt in" "$OUTPUT_PDF_FOLDER"
+mkdir -p "$PDF_FOLDER"
+# Find all PDFs in folder and convert to txt in PDF_FOLDER folder
+#fd ".pdf$" --exec pdftotext {} $PDF_FOLDER/{/}.txt
 #files=$(fd ".pdf$")
 #for file in ${files[@]}; do
 
-IFS=$'\n' read -r -d '' -a files < <(fd ".pdf$")
+IFS=$'\n' read -r -d '' -a files < <(fd ".pdf$" $INPUT_PDF_FOLDER)
 for file in "${files[@]}"; do
 
     # Check that file has valid characters
     if [[ "$file" =~ [a-zA-Z0-9] ]]; then
         # Replace spaces in new filename
-        newfile=$(basename $file)
+        newfile=$(basename "$file")
         newfile=$(echo "$newfile" | sed -e 's/ /_/g')
 
         # Check if spaces-replaced filename is already present (processed)
-        if [ $(fd ^"$newfile".txt$ "$PDF_FOLDER") ]; then
+        if [ $(fd ^"$newfile".txt$ "$OUTPUT_PDF_FOLDER") ]; then
           echo "Already present! :" "$newfile"
 
         # Convert pdf to txt for easy searching with fsearch
         else
           echo "Adding ..." "$file"
-          cp "$file" $PDF_FOLDER/"$newfile"
-          pdftotext "$file" $PDF_FOLDER/"$newfile".txt #2>/dev/null
+          cp "$file" "$OUTPUT_PDF_FOLDER"/"$newfile"
+          pdftotext "$file" "$OUTPUT_PDF_FOLDER"/"$newfile".txt #2>/dev/null
          fi
     fi; done
 }

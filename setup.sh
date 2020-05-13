@@ -34,11 +34,15 @@ brew install fd vim less bat ripgrep rga diff-so-fancy fzy fasd
 
 
 # Dictionary look-up and translate
-wget git.io/trans
-chmod +x ./trans
+#wget git.io/trans
+#chmod +x ./trans
 
 echo -e "\nInstalling tldr, tldr lookup of bash commands"
 pip install --user tldr
+
+echo -e "\nInstalling how2: stackexchange lookup for programming examples"
+brew install npm
+npm install -g how-2
 
 read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_profile? " -n 1 -r
     echo "Adding source to .bash_profile ..."

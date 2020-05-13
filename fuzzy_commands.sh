@@ -101,12 +101,12 @@ function fh() # Find BASH History: Fuzzy search bash history
 function f_filenames() # Fuzzy search filenames, preview content and open in vim
 {
     local file=$(
-      fzf -e --query="$1" --no-multi --select-1 --exit-0 \
+      ls -r | fzf -e --query="$1" --no-multi --select-1 --exit-0 \
           --preview 'bat --color=always --line-range :500 {}'
       )
     if [[ -n $file ]]; then
         realpath "$file"
-        $EDITOR "$file"
+        open "$file"
     fi
 }
 
@@ -247,11 +247,11 @@ function f_word() # Dictionary search for english words
 }
 
 
-function f_file_sizes ()
+function f_sizes ()
 {
 #
 # Bash find total file size of each type of extension in folder
-find . -maxdepth ${1:-1} -name '?*.*' -type f -print0 |
+find . -maxdepth ${1:-3} -name '?*.*' -type f -print0 |
   perl -0ne '
     if (@s = stat$_){
       ($ext = $_) =~ s/.*\.//s;
