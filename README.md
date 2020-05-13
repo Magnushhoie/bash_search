@@ -13,8 +13,8 @@ bash setup.sh
 
 Add to .bash_profile or .bashrc:
 ```bash
-source bash_search/fuzzy_commands.sh
-source bash_search/bash_notes.sh
+source ~/bash_search/fuzzy_commands.sh
+source ~/bash_search/bash_notes.sh
 ```
 
 #### 1. bash_notes.sh:
