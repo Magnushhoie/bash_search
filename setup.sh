@@ -30,7 +30,7 @@ read -p "Install buku to search browser history and bookmarks? E.g. f_browser_bo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     pip3 install --user buku
-    print("Creating buku database for browser bookmarks: buku --suggest --ai ...")
+    echo "Creating buku database for browser bookmarks: buku --suggest --ai ..."
     buku --suggest --ai
 fi
 
