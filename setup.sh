@@ -50,9 +50,9 @@ read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_p
     FILE=$(echo $HOME/.bash_profile)
     grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
-    LINE=$(echo [ -f ~/.fzf.bash ] && source ~/.fzf.bash)
-    FILE=$(echo $HOME/.bash_profile)
-    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+    #LINE=$(echo [ -f ~/.fzf.bash ] && source ~/.fzf.bash)
+    #FILE=$(echo $HOME/.bash_profile)
+    #grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
 
 fi
 
