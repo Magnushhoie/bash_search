@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/Users/admin/_References'
+let g:netrw_dirhist_3='/Users/admin'
+let g:netrw_dirhist_2='/Users/admin/Downloads'
+let g:netrw_dirhist_1='/Users/admin'
+let g:netrw_dirhist_0='/Users/admin/Applications'
+let g:netrw_dirhist_9='/Users/admin'
+let g:netrw_dirhist_8='/'
+let g:netrw_dirhist_7='/Users/admin/_References'
+let g:netrw_dirhist_6='/Users'
+let g:netrw_dirhist_5='/Users/admin/_References'
