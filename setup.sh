@@ -38,7 +38,7 @@ read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_p
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
     echo "Adding source to .bash_profile ..."
-    script_dir=$(dirname ${BASH_SOURCE[0]})
+    script_dir=$(realpath $(dirname ${BASH_SOURCE[0]}))
     source_file=$script_dir/fuzzy_commands.sh
 
     LINE=$(echo 'source' $source_file)
@@ -79,8 +79,8 @@ else
 fi
 
 echo "Sourcing script files ..."
-source fuzzy_commands.sh
-source bash_notes.sh
+source $script_dir/fuzzy_commands.sh
+source $script_dir/bash_notes.sh
 echo "Done!"
 echo -e "To get started try ref (search) or refv (search and edit in Vim). If using ref, use q to exit.\nIf using refv, press i to write. Press Escape and write :wq to save and exit."
 echo "E.g. ref python"

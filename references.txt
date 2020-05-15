@@ -29,7 +29,11 @@ f_files # Fuzzy filename search. Show context of all files in current directory
 __fzf search previous bash terminal commands
 ctrl + r
 
-
+__vim __less __bash __terminal __tmux
+Select and copy text: ctrl + r
+Use again to return to normal terminal interaction
+Alternatives: select text and use middle mouse button to paste (mouse wheel click)
+Ctrl + insert (copy) shift + insert (paste)
 
 
 
