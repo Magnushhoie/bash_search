@@ -7,6 +7,8 @@ PDF_PAPERS_FOLDER="/Users/admin/Library/Application Support/Mendeley Desktop/Dow
 PDF_PAPERS_DOWNLOAD_FOLDER="$ref_folder/pdfs/paper_download"
 bash_notes="$(realpath ${BASH_SOURCE[0]})"
 
+source fuzzy_commands.sh
+
 ref_help() # Show all functions in bash_notes.sh
 {
 echo -e 'Your main note file is references.txt in folder ~/_References/.\nTo search or edit it, use "ref search terms here", or "refv". Both accept additional search keywords.'

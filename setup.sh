@@ -13,8 +13,8 @@ echo -e "\nInstalling fzf fuzzy finder ..."
 $(brew --prefix)/opt/fzf/install
 
 echo -e "\nInstalling dependencies ..."
-brew installi coreutils fd vim bat ripgrep rga diff-so-fancy fzy fasd vim
-brew install exa realpath tree
+brew install coreutils fd vim bat ripgrep rga diff-so-fancy fzy fasd vim
+brew install exa tree
 brew install bellecp/fast-p/fast-pdf-finder # for searching PDFs
 brew install tldr # look-up of bash-commands. E.g. tldr gzip
 brew install the_silver_searcher # Extremely fast file searches with ag search_pattern

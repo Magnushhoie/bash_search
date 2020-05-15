@@ -51,7 +51,7 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-function fsearch() # Interactive Search file contents in folder
+function f_search() # Interactive Search file contents in folder
 {
 search_terms=${@:-"."}
 local vfile
@@ -63,7 +63,7 @@ if [[ "$vfile" =~ [a-zA-Z0-9] ]];
 fi
 }
 
-function fif() # Find in Folder: Search file contents, only show matching file once
+function f_if() # Find in Folder: Search file contents, only show matching file once
 {
 search_terms=${@:-"\s"}
     if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
@@ -93,7 +93,7 @@ function fcd() # Interactive change-directory with fzf
     done
 }
 
-function fh() # Find BASH History: Fuzzy search bash history
+function f_bashh() # Find BASH History: Fuzzy search bash history
 {
   echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | awk '{print $FN}')
 }
