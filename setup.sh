@@ -79,10 +79,10 @@ else
 fi
 
 echo "Sourcing script files ..."
-source $script_dir/fuzzy_commands.sh
-source $script_dir/bash_notes.sh
+source fuzzy_commands.sh
+source bash_notes.sh
 echo "Done!"
-echo "To get started try ref (search) or refv (search and edit in Vim). If using ref, use q to exit. If using refv, press i to write. Press Escape and write :wq to save and exit."
+echo -e "To get started try ref (search) or refv (search and edit in Vim). If using ref, use q to exit.\nIf using refv, press i to write. Press Escape and write :wq to save and exit."
 echo "E.g. ref python"
 echo "Note: To write the file in Vim, press Escape then write :w or :wq . w = write, q = quit."
 echo "Note: To exit less press q ... q = quit. To exit Vim press Escape then write :q or :q! ... q = quit, q! = force quit)"
