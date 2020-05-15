@@ -40,6 +40,7 @@ read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_p
     echo "Adding source to .bash_profile ..."
     script_dir=$(dirname ${BASH_SOURCE[0]})
     source_file=$script_dir/fuzzy_commands.sh
+
     LINE=$(echo 'source' $source_file)
     FILE=$(echo $HOME/.bash_profile)
     grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
@@ -48,6 +49,11 @@ read -p "Automatically add source bash_notes.sh and fuzzy_commands.sh to .bash_p
     LINE=$(echo 'source' $source_file)
     FILE=$(echo $HOME/.bash_profile)
     grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+
+    LINE=$(echo [ -f ~/.fzf.bash ] && source ~/.fzf.bash)
+    FILE=$(echo $HOME/.bash_profile)
+    grep -qF -- "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+
 fi
 
 

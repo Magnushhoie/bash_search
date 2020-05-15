@@ -26,6 +26,8 @@ refv newfile.txt # Create new file called newfile.txt
 f_search # Fuzzy (fzf) search. Search all lines in all files in current folders (infinite depth). Can search your entire computer in a few minutes.
 f_files # Fuzzy filename search. Show context of all files in current directory
 
+__fzf search previous bash terminal commands
+ctrl + r
 
 
 

@@ -3,16 +3,8 @@ ref_folder=$HOME/_References
 papers_folder=$HOME/Desktop/Papers
 
 notefile="$ref_folder/references.txt"
-PDF_TEXT_FOLDER="$ref_folder/pdfs/pdf_text"
-#PDF_PAPERS_TEXT_FOLDER="$ref_folder/pdfs/paper_library"
 PDF_PAPERS_FOLDER="/Users/admin/Library/Application Support/Mendeley Desktop/Downloaded"
 PDF_PAPERS_DOWNLOAD_FOLDER="$ref_folder/pdfs/paper_download"
-mkdir -p "$ref_folder"
-#mkdir -p "$PDF_FOLDER"
-mkdir -p "$PDF_PAPERS_DOWNLOAD_FOLDER"
-
-local_name=$(uname -a | awk '{print $2}')
-local_folder=$ref_folder/$local_name
 bash_notes="$(realpath ${BASH_SOURCE[0]})"
 
 ref_help() # Show all functions in bash_notes.sh
@@ -162,7 +154,7 @@ function ref_fsearch() # Interactive search and edit all reference files in Vim
 current_dir=$PWD
 # Use fuzzy search in folder from fuzzy_commands
 cd $ref_folder
-fsearch "$@"
+f_search "$@"
 cd $current_dir
 }
 
@@ -170,7 +162,7 @@ ref_fif()
 {
 current_dir=$PWD
 cd $ref_folder
-fif "$@"
+f_if "$@"
 cd $current_dir
 }
 
@@ -194,8 +186,6 @@ echo "$PDF_FOLDER"
 echo "$search_terms"      
 if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
 local file
-#file=$(rga --max-count=1 --max-depth 2 --sort modified --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" "$PDF_FOLDER" |
-# fzf-tmux --delimiter / --with-nth -1 -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}") && echo "$file" && pdf_file=${file::${#file}-4} && open "$pdf_file"
 file=$(rga --max-count=1 --max-depth 2 --sort modified --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" "$PDF_FOLDER" |
  fzf-tmux --delimiter / --with-nth -1 -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}")
 
@@ -208,10 +198,6 @@ if [[ "$file" == *.* ]]; then
 fi
 
 pdf_file=${file::${#file}-4}
-#if [[ -z "$file" ]]; then
-#        echo "$file"
-#        open "$file"
-#fi
 }
 
 ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS (ref_add_pdfs ~/_References/PDF_PAPERS)
@@ -230,7 +216,7 @@ CURRENT_DIR="$PWD"
 PDF_FOLDER=${1:-"$PDF_FOLDER"}
 cd "$PDF_FOLDER"
 
-fif $@
+f_if $@
 
 cd "$CURRENT_DIR"
 }
@@ -243,10 +229,6 @@ OUTPUT_PDF_FOLDER=${2:-"$PDF_FOLDER"}
 echo "Reading files from" $INPUT_PDF_FOLDER
 echo "Outputting PDF -> txt in" "$OUTPUT_PDF_FOLDER"
 mkdir -p "$PDF_FOLDER"
-# Find all PDFs in folder and convert to txt in PDF_FOLDER folder
-#fd ".pdf$" --exec pdftotext {} $PDF_FOLDER/{/}.txt
-#files=$(fd ".pdf$")
-#for file in ${files[@]}; do
 
 IFS=$'\n' read -r -d '' -a files < <(fd ".pdf$" $INPUT_PDF_FOLDER)
 for file in "${files[@]}"; do
@@ -261,7 +243,7 @@ for file in "${files[@]}"; do
         if [ $(fd ^"$newfile".txt$ "$OUTPUT_PDF_FOLDER") ]; then
           echo "Already present! :" "$newfile"
 
-        # Convert pdf to txt for easy searching with fsearch
+        # Convert pdf to txt for easy searching with f_search
         else
           echo "Adding ..." "$file"
           cp "$file" "$OUTPUT_PDF_FOLDER"/"$newfile"
