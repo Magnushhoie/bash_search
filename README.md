@@ -1,6 +1,8 @@
 # bash_search
 
-Personal reference and note-taking system with search and edit directly in terminal. Includes combination of extremely powerful fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interacting with content in any folder.
+Extremely fast file search and note-taking system in macOS and unix systems, directly in the terminal. Collection of collected and edited scripts I have been actively every day for the past couple of years.
+
+Most functionality relies on fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interacting with content in any folder.
 
 ### Example of use:
 
@@ -11,11 +13,7 @@ Installation of dependencies:
 bash setup.sh
 ```
 
-Add to .bash_profile or .bashrc:
-```bash
-source ~/bash_search/fuzzy_commands.sh
-source ~/bash_search/bash_notes.sh
-```
+Installation is relatively fast on macOS, and relatively slow if using linuxbrew on another UNIX system.
 
 #### 1. bash_notes.sh:
 Bash note-taking system with easy search and editing in place, directly from the terminal using vim.
@@ -30,34 +28,33 @@ Commands:
 - ref_all: Search for keywords in all files in reference folder (non file-specific)
 - ref_allv: Interactively searches content of all files in reference folder and allows editing any matched file at line in vim
 
-
 #### 2. fuzzy_commands.sh:
-Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands.
+Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands. These can potentially search your entire computer for text in minutes.
 E.g. **interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes** and much more.
 
 Compiled from https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
 
 Bash fuzzy search commands:
-- fif (Find In Folder): Search all files in ANY folder for keywords, open in vim
-- fh (Find BASH History): search bash history
-- fda (Find Directory All): Search for folders in current directory (infinite depth) and interactively change directory
+- f_search (Find search): Search all files infinitely deep for text. Interactive search.
+- f_files: Shows contents of all files in the current directory
+- f_if (Find In Folder): Variant of the above. Cleaner presentation of search results.
+- f_bashh (Find BASH History): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
 - fcd (Fancy Change Directory): Interactive cd
-- fkill (Find Kill): Search for all processes, kill selected one
-- fman (Find Manual): Search bash manual
+- f_kill (Find Kill): Search all processes, kill selected one
+- f_man (Find Manual): Search bash manual
 
 Specific applications:
-- fpdf (Find PDF): Search any text in any pdf in folder, infinite depth
+- f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
-- fbhist (Find Browser HISTory): Search your entire browser (Safari/Chrome) history(es)
-  - Hard-set paths based on OSX. Change to own directories if want. Should also support firefox with modification
-- fb (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
-   - Easily set-up using: pip3 install --user buku; buku --suggest --ai
+- f_browser_history: Search entire browser histories (Safari/Chrome/Chromium)
+  - Hard-set paths based on macOS. Should also support firefox with modification
+- f_browser_bookmarks (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
    - https://github.com/jarun/buku
-- v (vim last used): Shows / selects last opened vim files
+- f_vvim (vim last used): Shows / selects last opened vim files
 
 ### 3. setup.sh:
-- Installer for all dependencies. Coded for Mac OSX use.
+- Installer for all dependencies. Tested on macOS and Ubuntu.
 
 ### 4. optional files
-- Collection of own .vim and .tmux configurations. Use at own risk...
+- Suggested vim configuration files and plugins. Installer will ask whether to install first.
 
