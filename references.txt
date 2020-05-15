@@ -1,0 +1,85 @@
+__less exit current file
+press q
+
+__fzf exit current view
+ctrl + c
+
+__vim commands
+Use command: Press Escape first then write (text should appear at the bottom of the screen):
+:q! # force quit
+:wq # Write and quit
+:wq! # Force write and quit
+:w # write
+
+__vim shortcuts write, edit and search. Try to press escape first then write:
+i # Insert mode. Now you can write
+dd # delete (yank) line. To paste, use p or P
+V # Visual mode. Select lines. To delete use dd . to copy use y .
+/ # Search. E.g. /your keywords   ... Use n for next and Shift + N for previous.
+
+__bash_search commands
+in terminal, write f_ or ref then without using enter, press tab twice. This will show all valid options
+
+ref # Search references.txt file (this file)
+refv # Search and edit references files. i to write. Escape + :wq to write file and exit
+refv newfile.txt # Create new file called newfile.txt
+f_search # Fuzzy (fzf) search. Search all lines in all files in current folders (infinite depth). Can search your entire computer in a few minutes.
+f_files # Fuzzy filename search. Show context of all files in current directory
+
+
+
+
+
+
+__mac show emoticons smileys
+Ctrl + command + space
+
+__mac open folder from terminal
+open .
+
+__mac change caps lock to escape
+First, go into the System Preferences, choose Keyboard, then the Keyboard Tab (first tab), and click Modifier Keys:
+https://stackoverflow.com/questions/127591/using-caps-lock-as-esc-in-mac-os-x
+
+__mac spotlight open folder file is in
+Search -> Select file -> Command + R or Command + Enter
+
+__mac open multiple calculators
+open -na calculator
+
+__mac calculator not showing space thousand separator
+System preferences ->  Language and region -> Advanced
+-> number separators -> groupings -> set space
+
+__mac zoom in
+Apple + option + 8
+Apple + option + =-\
+
+__mac delete key
+Ctrl + D
+
+__excel macOS change excel comma to dot regional setting, decimal separator
+System apple button -> system preferences
+Language and region -> advanced
+Under general -> change number separator decimal to .
+
+__bash find and kill process
+pgrep chrome
+#Check id
+kill -9 ID
+pkill -f chrome
+
+__python bash
+# run python code from bash
+python -c "print("Hello world!")"
+
+__python
+# Get unique from list
+set(list_x)
+
+__python
+# Add new folder to python path for importing modules, and show python paths
+import sys
+print(sys.path)
+sys.path.insert(0, "/home/admin")
+sys.path.insert(0, "/home/admin/scripts")

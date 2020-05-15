@@ -15,15 +15,17 @@ local_name=$(uname -a | awk '{print $2}')
 local_folder=$ref_folder/$local_name
 bash_notes="$(realpath ${BASH_SOURCE[0]})"
 
-function ref_help() # Show all functions in bash_notes.sh
+ref_help() # Show all functions in bash_notes.sh
 {
+echo -e 'Your main note file is references.txt in folder ~/_References/.\nTo search or edit it, use "ref search terms here", or "refv". Both accept additional search keywords.'
+echo -e "Tip: Use refv your_new_file.txt to create a new notefile. Search or edit it with ref / refv your_new_file\n"
 echo $(realpath $bash_notes)
 grep --color=always "^function " $bash_notes
 }
 
-ref_helpv() # Edit bash_notes.sh
+function ref_list() # List note files in Reference folder
 {
-vim $bash_notes
+refv list
 }
 
 ref_get_notefile() # Helper function for ref functions
@@ -56,7 +58,7 @@ ref_get_notefile() # Helper function for ref functions
     fi
 
     # Print list of available files
-    if [ $firstword = "-h" -o $firstword = "-help" -o $firstword = "list" ];
+    if [ $firstword = "-h" -o $firstword = "--help" -o $firstword = "list" ];
         then for each in ${files[*]};
         do echo $each; done
     fi
@@ -105,7 +107,7 @@ rg --pretty --no-line-number -B 4 -A 10 "$6" |
 less -R
 }
 
-function ref() # Search references.txt
+function ref() # Search references.txt. Accepts search terms and/or files in search folder. E.g. ref datascience.txt Randomforest
 {
     filename=$(ref_get_notefile)
 
@@ -121,7 +123,7 @@ function ref() # Search references.txt
      search_file $filename ${@:-"\s"}
 }
 
-function refv() # Search and edit references.txt in vim
+function refv() # Search and edit references.txt in vim. Can create new files, e.g. refv datascience.txt
 {
 # Opens up vim at first mention of keyword(s)
 # Notefile is references.txt, unless another file found from first argument
@@ -183,7 +185,7 @@ search_folder $ref_folder ${@:-"\s"}
 }
 
 
-function get_pdfs() # Search all PDFs -> txt added to _References/PDF_ (ref_add_pdfs)
+get_pdfs() # Search all PDFs -> txt added to _References/PDF_ (ref_add_pdfs)
 {
 PDF_FOLDER=${1:-"$PDF_FOLDER"}
 shift
@@ -212,17 +214,17 @@ pdf_file=${file::${#file}-4}
 #fi
 }
 
-function ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS (ref_add_pdfs ~/_References/PDF_PAPERS)
+ref_papers() # Search all PDFs -> txt added to _References/PDF_PAPERS (ref_add_pdfs ~/_References/PDF_PAPERS)
 {
 get_pdfs "$PDF_PAPERS_FOLDER" "$@"
 }
 
-function ref_papers_download()
+ref_papers_download()
 {
 get_pdfs "$PDF_PAPERS_DOWNLOAD_FOLDER" "$@"
 }
 
-function ref_pdfs_fsearch() # Interactive search all PDFs -> txt added to _References/PDF_TEXT
+ref_pdfs_fsearch() # Interactive search all PDFs -> txt added to _References/PDF_TEXT
 {
 CURRENT_DIR="$PWD"
 PDF_FOLDER=${1:-"$PDF_FOLDER"}
@@ -233,7 +235,7 @@ fif $@
 cd "$CURRENT_DIR"
 }
 
-function ref_add_pdfs() # Process all PDFs in folder (recursively) into txt into PDF_ or specified output folder. Required for ref_pdfs or ref_papers
+ref_add_pdfs() # Process all PDFs in folder (recursively) into txt into PDF_ or specified output folder. Required for ref_pdfs or ref_papers
 {
 #INDIR=${1:-'.'}
 INPUT_PDF_FOLDER=${1:-"$PWD"}
@@ -268,7 +270,7 @@ for file in "${files[@]}"; do
     fi; done
 }
 
-function rename_files_remove_spaces() {
+rename_files_remove_spaces() {
 find . -name "* *" -type d
 find . -name "* *" -type f
 echo "Will rename all shown files/folders above by replacing spaces with _"

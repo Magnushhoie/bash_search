@@ -98,7 +98,7 @@ function fh() # Find BASH History: Fuzzy search bash history
   echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | awk '{print $FN}')
 }
 
-function f_filenames() # Fuzzy search filenames, preview content and open in vim
+function f_files() # Fuzzy search filenames, preview content and open in vim
 {
     local file=$(
       ls -r | fzf -e --query="$1" --no-multi --select-1 --exit-0 \
@@ -225,7 +225,7 @@ function f_pdf () # Search all PDFs in folder, recursively
     | gcut -z -f 1 -d $'\t' | gtr -d '\n' | gxargs -r --null $open > /dev/null 2> /dev/null
 }
 
-function f_v() #open last used vim files in ~/.viminfo
+function f_vim() #open last used vim files in ~/.viminfo
 {
   local files
   IFS=$'\n'
@@ -251,7 +251,8 @@ function f_sizes ()
 {
 #
 # Bash find total file size of each type of extension in folder
-find . -maxdepth ${1:-3} -name '?*.*' -type f -print0 |
+echo "Showing file-sizes n levels deep (default 4)"
+find . -maxdepth ${1:-4} -name '?*.*' -type f -print0 |
   perl -0ne '
     if (@s = stat$_){
       ($ext = $_) =~ s/.*\.//s;
@@ -267,7 +268,3 @@ find . -maxdepth ${1:-3} -name '?*.*' -type f -print0 |
 
 }
 
-#function f_file_sizes ()
-#{
-#du -ch `find . -type f -name "$1"` | sort -rh | fzf | realpath $(awk '{print $2}')
-#}
