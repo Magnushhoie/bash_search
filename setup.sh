@@ -4,7 +4,8 @@ echo "Bash note reference directory will be ~/_References/"
 read -p "Install brew and pip (Necessary for installation of dependencies)? y/n " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     python get-pip.py
 fi
