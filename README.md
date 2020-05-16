@@ -50,7 +50,7 @@ Specific applications:
   - Hard-set paths based on macOS. Should also support firefox with modification
 - f_browser_bookmarks (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
    - https://github.com/jarun/buku
-- f_vvim (vim last used): Shows / selects last opened vim files
+- f_vim (vim last used): Shows / selects last opened vim files
 
 ### 3. setup.sh:
 - Installer for all dependencies. Tested on macOS and Ubuntu.
