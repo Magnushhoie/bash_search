@@ -78,12 +78,8 @@ else
     cp references.txt $ref_folder/references.txt
 fi
 
-echo "Sourcing script files ..."
-source $script_dir/fuzzy_commands.sh
-source $script_dir/bash_notes.sh
-echo "Done! Please restart your shell or run source ~/.bash_profile"
-echo -e "To get started try ref (search) or refv (search and edit in Vim). If using ref, use q to exit.\nIf using refv, press i to write. Press Escape and write :wq to save and exit."
-echo "E.g. ref python"
-echo "Note: To write the file in Vim, press Escape then write :w or :wq . w = write, q = quit."
-echo "Note: To exit less press q ... q = quit. To exit Vim press Escape then write :q or :q! ... q = quit, q! = force quit)"
-echo "For overview of commands try (in the terminal) to write  ref_ or f_ then press the tab key twice"
+echo "Done! Please open a new terminal shell, or run source ~/.bash_profile"
+echo -e "To get started try ref (search) or refv (search and edit in Vim)"
+echo "Note: To exit refv (Vim), press Escape then write :q   ... to save and exit write :wq   ... :w = write, :q = quit
+echo "Note: To exit ref \(less\) press q ... q = quit." 
+echo "For overview of commands write  ref_help or f_help"
