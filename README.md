@@ -42,8 +42,6 @@ Bash fuzzy search commands:
 - fcd (Fancy Change Directory): Interactive cd
 - f_kill (Find Kill): Search all processes, kill selected one
 - f_man (Find Manual): Search bash manual
-
-Specific applications:
 - f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
 - f_browser_history: Search entire browser histories (Safari/Chrome/Chromium)
