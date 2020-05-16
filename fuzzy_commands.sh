@@ -16,6 +16,7 @@ trans="$source_folder/trans"
 
 function f_help () # Show list of commands
 {
+echo "Find (fuzzy-search) commands" 
 echo $(realpath $fuzzy_commands)
 echo "Shortcuts:"
 echo "Control + r search bash history"
