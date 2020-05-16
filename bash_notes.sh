@@ -146,7 +146,7 @@ function refv() # Search and edit references.txt in vim. Can create new files, e
 
     # Run vim on keywords
     if [ -z $1 ];
-    then vim $filename
+    then vim "$filename"
     else vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 $filename
     fi
 }

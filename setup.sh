@@ -26,7 +26,7 @@ then
     npm install -g how-2 
 fi
 
-read -p "Install buku to search browser history and bookmarks? E.g. f_browser_bookmarks Datascience randomforest.  y/n? " -n 1 -r
+read -p "Install buku to search browser history and bookmarks? E.g. f_browser_bookmarks keywords  y/n? " -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     pip3 install --user buku
@@ -81,7 +81,7 @@ fi
 echo "Sourcing script files ..."
 source $script_dir/fuzzy_commands.sh
 source $script_dir/bash_notes.sh
-echo "Done!"
+echo "Done! Please restart your shell or run source ~/.bash_profile"
 echo -e "To get started try ref (search) or refv (search and edit in Vim). If using ref, use q to exit.\nIf using refv, press i to write. Press Escape and write :wq to save and exit."
 echo "E.g. ref python"
 echo "Note: To write the file in Vim, press Escape then write :w or :wq . w = write, q = quit."
