@@ -81,6 +81,6 @@ fi
 
 echo "Done! Please open a new terminal shell, or run source ~/.bash_profile"
 echo -e "To get started try ref (search) or refv (search and edit in Vim)"
-echo "Note: To exit refv (Vim), press Escape then write :q   ... to save and exit write :wq   ... :w = write, :q = quit
+echo "Note: To exit refv (Vim), press Escape then write :q   ... to save and exit write :wq   ... :w = write, :q = quit"
 echo "Note: To exit ref \(less\) press q ... q = quit." 
 echo "For overview of commands write  ref_help or f_help"
