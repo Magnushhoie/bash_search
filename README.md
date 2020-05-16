@@ -32,12 +32,13 @@ E.g. **interactively searching and allowing editing of any number of files in a 
 
 Compiled from https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
 
-Bash fuzzy search commands:
-- f_search (Find search): Search all files infinitely deep for text. Interactive search.
+Bash fuzzy search commands. All are interactive using FZF:
+- f_search (Find search): Search files by lines on your computer, from current directory. Very powerful.
+- f_if (Find In Folder): Variant of the above. Cleaner presentation of search results. Configure max-depth to search deeper.
+- f_folders: Search folders on your computer, from current directory. 
 - f_files: Shows contents of all files in the current directory
-- f_if (Find In Folder): Variant of the above. Cleaner presentation of search results.
-- f_bashh (Find BASH History): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
-- fcd (Fancy Change Directory): Interactive cd
+- f_cd: Interactive cd for browsing directories.
+- f_bashh (Find BASH history): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
 - f_kill (Find Kill): Search all processes, kill selected one
 - f_man (Find Manual): Search bash manual
 - f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
