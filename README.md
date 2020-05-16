@@ -17,16 +17,14 @@ Installation is relatively fast on macOS, and relatively slow if using linuxbrew
 
 #### 1. bash_notes.sh:
 Bash note-taking system with easy search and editing in place, directly from the terminal using vim.
-Uses a combination of grep and vim to search a main note file or any file in ~/_References folder.
+Uses a combination of rip-grep and vim to search references.txt or any file in ~/_References folder.
 
 Commands:
 - ref keywords: Search for keywords in references.txt
-- refv keywords: Search references.txt and open at line in vim
+- refv keywords: Search references.txt and open at line in Vim. 
 - refv filename.txt: Create new note file
 - **ref_papers: Interactively searches all pdfs in your scientific paper folder for keywords**
   - Note: Hard-coded path. Set to paper folder used by your reference manager (EndNote, Mendeley, Zotero)
-- ref_all: Search for keywords in all files in reference folder (non file-specific)
-- ref_allv: Interactively searches content of all files in reference folder and allows editing any matched file at line in vim
 
 #### 2. fuzzy_commands.sh:
 Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands. These can potentially search your entire computer for text in minutes.
@@ -49,6 +47,10 @@ Bash fuzzy search commands:
 - f_browser_bookmarks (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
    - https://github.com/jarun/buku
 - f_vim (vim last used): Shows / selects last opened vim files
+
+In addition, if keybindings are enabled try these FZF shortcuts:
+- Ctrl + r: Search bash history
+- Ctrl + t: Search files
 
 ### 3. setup.sh:
 - Installer for all dependencies. Tested on macOS and Ubuntu.
