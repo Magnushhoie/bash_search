@@ -96,7 +96,7 @@ function fcd() # Interactive change-directory with fzf
 
 function f_bashh() # Find BASH History: Fuzzy search bash history
 {
-  echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | awk '{print $FN}')
+  echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf -e +s --tac | awk '{print $FN}')
 }
 
 function f_files() # Fuzzy search filenames, preview content and open in vim
