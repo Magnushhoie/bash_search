@@ -43,4 +43,4 @@ In addition, if keybindings are enabled try these FZF shortcuts:
 - Ctrl + t: Search files
 
 ### setup.sh:
-- Installer for all dependencies. Tested on macOS and Ubuntu 18.04.
+- Installer for all dependencies. Tested on macOS Mojave and Ubuntu 18.04.
