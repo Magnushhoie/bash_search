@@ -4,16 +4,14 @@ Collection of BASH scripts for searching text files, folders and PDFs interactiv
 
 Most functionality relies on fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interacting with content in any folder.
 
-### Example of use:
-
-https://terminalizer.com/view/ef4b2b193819
-
 Installation of dependencies:
 ```bash
 bash setup.sh
 ```
 
-Installation is relatively fast on macOS, and relatively slow if using linuxbrew on another UNIX system.
+### Example of use:
+
+https://terminalizer.com/view/ef4b2b193819
 
 ### setup.sh:
 - Run bash setup.sh for installation of all dependencies using homebrew/linuxbrew and addition of aliases to .bash_profile
