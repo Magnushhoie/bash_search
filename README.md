@@ -15,6 +15,10 @@ bash setup.sh
 
 Installation is relatively fast on macOS, and relatively slow if using linuxbrew on another UNIX system.
 
+### setup.sh:
+- Run bash setup.sh for installation of all dependencies using homebrew/linuxbrew and addition of aliases to .bash_profile
+- Tested on macOS Mojave and Ubuntu 18.04.
+
 #### fuzzy_commands.sh:
 Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands. These can potentially search your entire computer for text in minutes.
 E.g. **interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes** and much more.
@@ -42,5 +46,4 @@ In addition, if keybindings are enabled try these FZF shortcuts:
 - Ctrl + r: Search bash history
 - Ctrl + t: Search files
 
-### setup.sh:
-- Installer for all dependencies. Tested on macOS Mojave and Ubuntu 18.04.
+
