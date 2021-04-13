@@ -107,7 +107,7 @@ function f_files() # Fuzzy search filenames, preview content and open in vim
       )
     if [[ -n $file ]]; then
         realpath "$file"
-        open "$file"
+        vim "$file"
     fi
 }
 
