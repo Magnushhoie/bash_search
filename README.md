@@ -9,9 +9,6 @@ Installation of dependencies:
 bash setup.sh
 ```
 
-### Example of use:
-
-https://terminalizer.com/view/ef4b2b193819
 
 ### setup.sh:
 - Run bash setup.sh for installation of all dependencies using homebrew/linuxbrew and addition of aliases to .bash_profile
@@ -29,15 +26,12 @@ Bash fuzzy search commands. All are interactive using FZF:
 - f_folders: Search folders on your computer, from current directory. 
 - f_files: Shows contents of all files in the current directory
 - f_cd: Interactive cd for browsing directories.
-- f_bashh (Find BASH history): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
+- f_history (Find BASH history): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
+- f_git: Interactive search of git history
 - f_kill (Find Kill): Search all processes, kill selected one
 - f_man (Find Manual): Search bash manual
 - f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
   - Converts all pdfs in folder (infinite depth) to text (in cached directory)
-- f_browser_history: Search entire browser histories (Safari/Chrome/Chromium)
-  - Hard-set paths based on macOS. Should also support firefox with modification
-- f_browser_bookmarks (Find Bookmark): Search all browser (Chrome/Safari/Firefox) bookmarks compiled in buku database
-   - https://github.com/jarun/buku
 - f_vim (vim last used): Shows / selects last opened vim files
 
 In addition, if keybindings are enabled try these FZF shortcuts:
