@@ -31,7 +31,6 @@ Bash fuzzy search commands. All are interactive using FZF:
 - f_kill (Find Kill): Search all processes, kill selected one
 - f_man (Find Manual): Search bash manual
 - f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
-  - Converts all pdfs in folder (infinite depth) to text (in cached directory)
 - f_vim (vim last used): Shows / selects last opened vim files
 
 In addition, if keybindings are enabled try these FZF shortcuts:
