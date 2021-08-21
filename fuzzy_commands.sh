@@ -1,34 +1,22 @@
 #!/bin/bash
+# bash_search https://github.com/Magnushhoie/bash_search
+# Primarily sourced from:
+# https://github.com/junegunn/fzf/wiki/examples
 
-#https://github.com/junegunn/fzf/wiki/examples
+# Check shell for zsh compatibility
+zsh_shell=$(ps -p $$ | grep zsh)
+if [[ $zsh_shell ]]; then
+    export fuzzy_commands_dir=$( dirname ${0:a} )
+else
+    export fuzzy_commands_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+fi
+export string2arg_file="$fuzzy_commands_dir/string2arg.sh"
 
-#Awesome shortcuts:
-# Control + r search bash history
-# Control + T search files
-# Escape + C jump to folder
+# Max depth to search for in f_files and f_size
+export F_MAXDEPTH=4
 
-EDITOR=vim
-echo "sourced"
-fuzzy_commands="${BASH_SOURCE[0]}"
-source_folder="$(dirname ${BASH_SOURCE[0]})"
-string2arg_file="$source_folder/string2arg.sh"
-trans="$source_folder/trans"
-
-function f_help () # Show list of commands
-{
-echo "Find (fuzzy-search) commands" 
-echo $(realpath $fuzzy_commands)
-echo "Shortcuts:"
-echo "Control + r search bash history"
-echo "Control + T search files"
-echo "Escape + C jump to folder"
-grep --color=always "^function " $fuzzy_commands
-}
-
-f_helpv() # Edit (this) fuzzy_commands.sh file
-{
-vim $fuzzy_commands
-}
+# Nice coloring on man pages
+export MANPAGER="sh -c 'col -bx | bat -l man -p --paging always'"
 
 # ripgrep defaults. Change this to allow deeper searches
 export rg="rg --max-count 1000000 --max-depth 10 --max-filesize 1M"
@@ -38,25 +26,54 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color=always --line-range :500 {}'"
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
 export FZF_DEFAULT_OPTS="--reverse --inline-info --ansi"
 export FZF_COMPLETION_TRIGGER=']]'
+
 # Default command to use when input is tty
 export FZF_DEFAULT_COMMAND="fd --type f --color=always"
 # Using bat as previewer
 export FZF_CTRL_T_OPTS="--preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
-_fzf_compgen_path() {
+_fzf_compgen_path () {
   fd --hidden --follow --exclude ".git" . "$1"
 }
+
 # Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
+_fzf_compgen_dir () {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-function f_search() # Interactive Search file contents in folder
+
+function f_help ()    # Show list of commands
+{
+echo -e $(realpath $fuzzy_commands_dir/fuzzy_commands.sh:)
+echo -e
+echo -e "FZF terminal shortcuts:"
+echo -e "Control + R search bash history"
+echo -e "Control + T search files"
+echo -e "Escape + C jump to folder\n"
+grep --color=always "^function " $fuzzy_commands_dir/fuzzy_commands.sh
+}
+
+# fo [FUZZY PATTERN] - Open the selected file with the default editor
+# Modified version where you can press
+#   - CTRL-O to open with `open` command,
+#   - CTRL-E or Enter key to open with the $EDITOR
+function f_open()     # Open the selected file with the default editor
+{
+  IFS=$'\n' out=("$(fzf-tmux -e --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
+}
+
+function f_search ()  # Search all lines in all files, recursively
 {
 search_terms=${@:-"."}
 local vfile
-export vfile=$(rg -m 100000 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
+export vfile=$(rg --color=always -m 100000 --max-depth 10 -i -n -g "!*.html" "$search_terms" | fzf -e --preview="source $string2arg_file; string2arg {}")
 if [[ "$vfile" =~ [a-zA-Z0-9] ]];
 #if [[ -z "$vfile" ]];
    then echo $vfile
@@ -64,17 +81,66 @@ if [[ "$vfile" =~ [a-zA-Z0-9] ]];
 fi
 }
 
-function f_if() # Find in Folder: Search file contents, only show matching file once
+function f_file ()    # Find in file, preview contents
 {
+echo "Searching in files $F_MAXDEPTH levels deep (set with F_MAXDEPTH)"
 search_terms=${@:-"\s"}
-    if [ ! "$#" -gt 0 ]; then echo "Need a string to search for!"; return 1; fi
+    if [ ! "$#" -gt 0 ]; then echo "Usage: f_file <keywords>"; fi
     local file
-    file=$(rga --max-count=1 --max-depth 2 --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
-     fzf-tmux -e +m --preview="rga --ignore-case --pretty --context 10 "$1.*$2.*$3.$4.$5.$6" {}") && vim +":set hlsearch" +/$1.*$2.*$3.*$4.*$5 "$file" && echo $(realpath $file)
+    file=$(rga --max-count=1 --max-depth $F_MAXDEPTH --max-filesize 1M --ignore-case --files-with-matches --no-messages "$1.*$2.*$3.$4.$5.$6" |
+     fzf-tmux -e +m --preview="rga --ignore-case --pretty --context 10 $1.*$2.*$3.$4.$5.$6 {}") && vim +":set hlsearch" "+/$1.*$2.*$3.*$4.*$5" "$file" && echo $(realpath $file)
+     echo $file
 }
 
-function fcd() # Interactive change-directory with fzf
+function f_folder ()  # Search folder names and cd
 {
+  pwd
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf -e +m --preview 'ls {}') && cd "$dir" && pwd
+}
+
+function f_view ()    # View files in folder, preview content and open in vim
+{
+    local file=$(
+      ls -p |  grep -v / | fzf -e --query="$1" --no-multi --select-1 --exit-0 \
+          --preview 'bat --color=always --line-range :1000 {}'
+      )
+    # If file, open in vim. Otherwise change directory, run again
+    if [[ -f $file ]]; then
+        realpath "$file"
+        vim "$file"
+    else
+        echo "No files in folder $PWD"
+    fi
+}
+
+function f_size ()    # Show cumulative file size for each file extension in folder, n-levels (default 4) deep
+{
+# Bash find total file size of each type of extension in folder
+echo "Showing file-sizes "${1:-$F_MAXDEPTH}" levels deep (default 4)"
+find . -maxdepth "${1:-$F_MAXDEPTH}" -name '?*.*' -type f -print0 2> /dev/null |
+  perl -0ne '
+    if (@s = stat$_){
+      ($ext = $_) =~ s/.*\.//s;
+      $s{$ext} += $s[12];
+      $n{$ext}++;
+    }
+    END {
+      for (sort{$s{$a} <=> $s{$b}} keys %s) {
+        printf "%15d %4d %s\n",  $s{$_}<<9, $n{$_}, $_;
+      }
+    }' | numfmt --to=iec-i --suffix=B | tac |
+    fzf -e --preview="source $string2arg_file; string2arg_filesize {} "
+}
+
+function f_hist ()    # Search BASH History: Fuzzy search bash history
+{
+  echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf -e +s --tac | awk '{print $FN}')
+}
+
+function f_cd ()      # Interactive cd with fzf
+{
+  pwd
     if [[ "$#" != 0 ]]; then
         builtin cd "$@";
         return
@@ -91,33 +157,13 @@ function fcd() # Interactive change-directory with fzf
         ')"
         [[ ${#dir} != 0 ]] || return 0
         builtin cd "$dir" &> /dev/null
+        pwd
     done
 }
 
-function f_bashh() # Find BASH History: Fuzzy search bash history
-{
-  echo -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf -e +s --tac | awk '{print $FN}')
-}
-
-function f_files() # Fuzzy search filenames, preview content and open in vim
-{
-    local file=$(
-      ls -r | fzf -e --query="$1" --no-multi --select-1 --exit-0 \
-          --preview 'bat --color=always --line-range :500 {}'
-      )
-    if [[ -n $file ]]; then
-        realpath "$file"
-        vim "$file"
-    fi
-}
-
-function f_folders() # Fuzzy search all subdirectories and cd
-{
-  local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf -e +m --preview 'ls {}') && cd "$dir" && realpath "$dir"
-}
-
-function f_git_log() # Interactive look at git log
+alias gll='fzf_git_log'
+git config --global alias.ll 'log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+function f_git ()     # Interactive git log (AWESOME)
 {
     local selections=$(
       git ll --color=always "$@" |
@@ -131,10 +177,7 @@ function f_git_log() # Interactive look at git log
     fi
 }
 
-alias gll='fzf_git_log'
-git config --global alias.ll 'log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
-
-function f_kill() # kill processes - list only the ones you can kill.
+function f_kill ()    # Interactively kill process
 {
     local pid
     if [ "$UID" != "0" ]; then
@@ -149,70 +192,13 @@ function f_kill() # kill processes - list only the ones you can kill.
     fi
 }
 
-function f_browser_bookmarks() # Fuzzy search all browser bookmarks. Setup with pip3 install buku; buku --suggest ai
-{
-    chrome $(buku -p -f 40 | awk -F '\t' '{print $2"\t"$1}' | fzf -e | awk -F '\t' '{print $NF}' | sed 's/https:\/\///')
-}
-
-function f_browser_history() # Safari and Chrome browser history search
-{
-  local cols sep
-  cols=$(( COLUMNS / 3 ))
-  sep='{::}'
-
-  safari_temp=$(mktemp)
-  chrome_temp=$(mktemp)
-
-  #Safari
-  cp -f ~/Library/Safari/History.db /tmp/h
-  sqlite3 -separator $sep /tmp/h \
-    "select substr(id, 1, $cols), url
-     from history_items order by visit_count_score desc" > $safari_temp
-
-  #Chrome
-   if [ "$(uname)" = "Darwin" ]; then
-     google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
-     open=open
-   else
-     google_history="$HOME/.config/google-chrome/Default/History"
-     open=xdg-open
-   fi
-   cp -f "$google_history" /tmp/h
-   sqlite3 -separator $sep /tmp/h \
-     "select substr(title, 1, $cols), url
-      from urls order by last_visit_time desc" > $chrome_temp
-
-  #Combine
-  cat $chrome_temp $safari_temp |
-  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-  fzf -e --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
-}
-
-function f_browser_history_firefox() # Firefox history search (hardcoded path - change with f_helpv)
-{
-
-local cols sep google_history open
-cols=$(( COLUMNS / 3 ))
-sep='{::}'
-
-history="$HOME/Library/Application Support/Firefox/Profiles/xcrc0wh4.default/places.sqlite"
-open=xdg-open
-
-cp -f "$history" /tmp/h
-sqlite3 -separator $sep /tmp/h \
-  "select substr(id, 1, $cols), url
-   from history_items order by visit_count_score desc" |
-awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
-}
-
-function f_man() # Bash manuals search
+function f_man ()     # Search bash manual
 {
     man -k . | fzf -e --prompt='Man> ' --preview "echo {} | awk '{print $1}' | cut -f1 -d\( | xargs man" |
     awk '{print $1}' | cut -f1 -d\( | xargs man
 }
 
-function f_pdf () # Search all PDFs in folder, recursively
+function f_pdf ()     # Search all PDFs in folder, recursively
 {
     local open
     open=open   # on OSX, "open" opens a pdf in preview
@@ -226,46 +212,30 @@ function f_pdf () # Search all PDFs in folder, recursively
     | gcut -z -f 1 -d $'\t' | gtr -d '\n' | gxargs -r --null $open > /dev/null 2> /dev/null
 }
 
-function f_vim() #open last used vim files in ~/.viminfo
+function f_vim()      # Quick access files with fasd
 {
-  local files
-  IFS=$'\n'
-  files=$(grep '^>' ~/.viminfo | cut -c3- |
-          while read line; do
-            [ -f "${line/\~/$HOME}" ] && echo $line | sed "s#~#$HOME#"
-          done |
-    fzf -e --no-multi --select-1 --exit-0 \
-        --preview 'bat --color=always --line-range :100 {}'
-    )
-  if [[ -n $files ]]; then
-      vim ${files//\~/$HOME}
+  local file
+  file="$(fasd -Rfl "$1" | fzf -e --no-multi --select-1 --exit-0 \
+      --preview 'bat --color=always --line-range :1000 {}')" && vi "${file}" || return 1
+}
+
+function f_chrome()   # Search chrome bookmarks
+{
+  local cols sep google_history open
+  cols=$(( COLUMNS / 3 ))
+  sep='{::}'
+
+  if [ "$(uname)" = "Darwin" ]; then
+    google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+    open=open
+  else
+    google_history="$HOME/.config/google-chrome/Default/History"
+    open=xdg-open
   fi
+  cp -f "$google_history" /tmp/h
+  sqlite3 -separator $sep /tmp/h \
+    "select substr(title, 1, $cols), url
+     from urls order by last_visit_time desc" |
+  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+  fzf -e --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
 }
-
-function f_word() # Dictionary search for english words
-{
-  cat /usr/share/dict/words | rg -i -e ${1:-"."} | fzf | trans -d |head -n 15
-}
-
-
-function f_sizes ()
-{
-#
-# Bash find total file size of each type of extension in folder
-echo "Showing file-sizes n levels deep (default 4)"
-find . -maxdepth ${1:-4} -name '?*.*' -type f -print0 |
-  perl -0ne '
-    if (@s = stat$_){
-      ($ext = $_) =~ s/.*\.//s;
-      $s{$ext} += $s[12];
-      $n{$ext}++;
-    }
-    END {
-      for (sort{$s{$a} <=> $s{$b}} keys %s) {
-        printf "%15d %4d %s\n",  $s{$_}<<9, $n{$_}, $_;
-      }
-    }' | numfmt --to=iec-i --suffix=B | tac |
-    fzf -e --preview="source $string2arg_file; string2arg_filesize {} "
-
-}
-
