@@ -1,7 +1,6 @@
 #!/bin/bash
 # bash_search https://github.com/Magnushhoie/bash_search
-# Primarily sourced from:
-# https://github.com/junegunn/fzf/wiki/examples
+# Scripts primarily sourced from: https://github.com/junegunn/fzf/wiki/examples
 
 # Check shell for zsh compatibility
 zsh_shell=$(ps -p $$ | grep zsh)
@@ -59,7 +58,7 @@ grep --color=always "^function " $fuzzy_commands_dir/fuzzy_commands.sh
 # Modified version where you can press
 #   - CTRL-O to open with `open` command,
 #   - CTRL-E or Enter key to open with the $EDITOR
-function f_open()     # Open the selected file with the default editor
+function f_open()     # Open the selected file. Hotkeys CTRL+O (open) or CTRL+E ($EDITOR)
 {
   IFS=$'\n' out=("$(fzf-tmux -e --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
   key=$(head -1 <<< "$out")
@@ -163,7 +162,7 @@ function f_cd ()      # Interactive cd with fzf
 
 alias gll='fzf_git_log'
 git config --global alias.ll 'log --graph --format="%C(yellow)%h%C(red)%d%C(reset) - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
-function f_git ()     # Interactive git log (AWESOME)
+function f_git_log () # Interactive git log (AWESOME)
 {
     local selections=$(
       git ll --color=always "$@" |
@@ -175,6 +174,22 @@ function f_git ()     # Interactive git log (AWESOME)
         local commits=$(echo "$selections" | cut -d' ' -f2 | tr '\n' ' ')
         git show $commits
     fi
+}
+
+function f_git_branch() # checkout git branch/tag, with a preview showing the commits between the tag/branch and HEAD
+{
+  local tags branches target
+  branches=$(
+    git --no-pager branch --all \
+      --format="%(if)%(HEAD)%(then)%(else)%(if:equals=HEAD)%(refname:strip=3)%(then)%(else)%1B[0;34;1mbranch%09%1B[m%(refname:short)%(end)%(end)" \
+    | sed '/^$/d') || return
+  tags=$(
+    git --no-pager tag | awk '{print "\x1b[35;1mtag\x1b[m\t" $1}') || return
+  target=$(
+    (echo "$branches"; echo "$tags") |
+    fzf --no-hscroll --no-multi -n 2 \
+        --ansi --preview="git --no-pager log -150 --pretty=format:%s '..{2}'") || return
+  git checkout $(awk '{print $2}' <<<"$target" )
 }
 
 function f_kill ()    # Interactively kill process

@@ -21,7 +21,7 @@ read -p "Brew install dependencies fzf coreutils fd bat ripgrep rga vim the_silv
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   $(brew --prefix)/opt/fzf/install
-  brew install coreutils fd bat ripgrep rga vim
+  brew install coreutils fd bat ripgrep rga fasd vim
   brew install the_silver_searcher
 fi
 
