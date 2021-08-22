@@ -54,10 +54,6 @@ echo -e "Escape + C jump to folder\n"
 grep --color=always "^function " $fuzzy_commands_dir/fuzzy_commands.sh
 }
 
-# fo [FUZZY PATTERN] - Open the selected file with the default editor
-# Modified version where you can press
-#   - CTRL-O to open with `open` command,
-#   - CTRL-E or Enter key to open with the $EDITOR
 function f_open()     # Open the selected file. Hotkeys CTRL+O (open) or CTRL+E ($EDITOR)
 {
   IFS=$'\n' out=("$(fzf-tmux -e --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
