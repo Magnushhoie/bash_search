@@ -1,40 +1,103 @@
-# bash_search
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-Collection of BASH scripts for searching text files, folders and PDFs interactively from the terminal.
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/Magnushhoie/bash_ref">
+  </a>
 
-Most functionality relies on fuzzy search functions using fzf (https://github.com/junegunn/fzf) for searching and interacting with content in any folder.
+  <h3 align="center">bash_ref</h3>
 
-Installation of dependencies:
+  <p align="center">
+    Blazingly fast and interactive file search scripts, based on FZF and BASH.
+  <br>
+    Sourced from https://github.com/junegunn/fzf/wiki/examples
+    
+  
+  </p>
+</p>
+
+## Installation
+
+Sets up notes directory and adds aliases to ~/.bash_profile or ~/.zshrc.
+
 ```bash
+git clone https://github.com/Magnushhoie/bash_search
+cd bash_search
 bash setup.sh
 ```
 
+## Usage
+All commands provide interactive search, supported by [FZF](https://github.com/junegunn/fzf)
 
-### setup.sh:
-- Run bash setup.sh for installation of all dependencies using homebrew/linuxbrew and addition of aliases to .bash_profile
-- Tested on macOS Mojave and Ubuntu 18.04.
+- **f_open** to quickly find files by name
+- **f_search** to search contents of all files recursively (extremely powerful)
+- f_view to preview individual file contents in current directory
+- **Ctrl + R** to search bash history
+- **f_help** to see remaining commands (shown below)
 
-#### fuzzy_commands.sh:
-Series of search scripts that provide extremely fast and powerful fuzzy search with useful commands. These can potentially search your entire computer for text in minutes.
-E.g. **interactively searching and allowing editing of any number of files in a directory, searching all PDFs or notes on your computer, finding and killing processes** and much more.
+## Documentation
+```bash
+$ f_help
 
-Compiled from https://github.com/junegunn/fzf/wiki/examples and others, with some small tweaks for personal use.
+FZF terminal shortcuts:
+Control + R search bash history
+Control + T search files
+Escape + C jump to folder
 
-Bash fuzzy search commands. All are interactive using FZF:
-- f_search (Find search): Search files by lines on your computer, from current directory. Very powerful.
-- f_if (Find In Folder): Variant of the above. Cleaner presentation of search results. Configure max-depth to search deeper.
-- f_folders: Search folders on your computer, from current directory. 
-- f_files: Shows contents of all files in the current directory
-- f_cd: Interactive cd for browsing directories.
-- f_history (Find BASH history): search your bash command history. Alternatively, use ctrl + r to search directly in the terminal using FZF.
-- f_git: Interactive search of git history
-- f_kill (Find Kill): Search all processes, kill selected one
-- f_man (Find Manual): Search bash manual
-- f_pdf (Find PDF): Search any text in any pdf in folder, infinite depth. Enter to open file.
-- f_vim (vim last used): Shows / selects last opened vim files
+function f_help ()    # Show list of commands
+function f_open()     # Open the selected file. Hotkeys CTRL+O (open) or CTRL+E ($EDITOR)
+function f_search ()  # Search all lines in all files, recursively
+function f_file ()    # Find in file, preview contents
+function f_folder ()  # Search folder names and cd
+function f_view ()    # View files in folder, preview content and open in vim
+function f_size ()    # Show cumulative file size for each file extension in folder, n-levels (default 4) deep
+function f_hist ()    # Search BASH History: Fuzzy search bash history
+function f_cd ()      # Interactive cd with fzf
+function f_git_log () # Interactive git log (AWESOME)
+function f_git_branch() # checkout git branch/tag, with a preview showing the commits between the tag/branch and HEAD
+function f_kill ()    # Interactively kill process
+function f_man ()     # Search bash manual
+function f_pdf ()     # Search all PDFs in folder, recursively
+function f_vim()      # Quick access files with fasd
+function f_chrome()   # Search chrome bookmarks
+```
 
-In addition, if keybindings are enabled try these FZF shortcuts:
-- Ctrl + r: Search bash history
-- Ctrl + t: Search files
+## Dependencies
+
+Automatically installed using brew in setup.sh
+
+```bash
+brew install coreutils fd bat ripgrep rga fasd vim the_silver_searcher
+```
+
+## Compatibility
+Compatible with zsh. Tested on MacOS Mojave and Ubuntu 21.04. 
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
 
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/Magnushhoie/bash_ref.svg?style=for-the-badge
+[contributors-url]: https://github.com/Magnushhoie/bash_ref/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Magnushhoie/bash_ref.svg?style=for-the-badge
+[forks-url]: https://github.com/Magnushhoie/bash_ref/network/members
+[stars-shield]: https://img.shields.io/github/stars/Magnushhoie/bash_ref.svg?style=for-the-badge
+[stars-url]: https://github.com/Magnushhoie/bash_ref/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Magnushhoie/bash_ref.svg?style=for-the-badge
+[issues-url]: https://github.com/Magnushhoie/bash_ref/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/Magnushhoie/bash_ref/blob/master/LICENSE.txt
