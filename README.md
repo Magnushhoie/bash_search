@@ -37,7 +37,7 @@ All commands provide interactive search, supported by [FZF](https://github.com/j
 
 - **f_open** to quickly find files by name
 - **f_search** to search contents of all files recursively (extremely powerful)
-- **f_view** to preview individual file contents in current directory
+- **f_view** to preview file contents in current directory
 - **Ctrl + R** to search bash history
 - **f_help** to see remaining commands (shown below)
 
