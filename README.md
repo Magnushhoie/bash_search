@@ -22,6 +22,11 @@
   </p>
 </p>
 
+<p align="center">
+<a href="https://asciinema.org/a/458105">
+<img src="img/screenshot.png" alt="Logo" width="500">
+</p>
+
 ## Installation
 
 Sets up notes directory and adds aliases to ~/.bash_profile or ~/.zshrc.
