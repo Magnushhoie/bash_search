@@ -32,15 +32,6 @@ cd bash_search
 bash setup.sh
 ```
 
-## Usage
-All commands provide interactive search, supported by [FZF](https://github.com/junegunn/fzf)
-
-- **f_open** to quickly find files by name
-- **f_search** to search contents of all files recursively (extremely powerful)
-- **f_view** to preview file contents in current directory
-- **Ctrl + R** to search bash history
-- **f_help** to see remaining commands (shown below)
-
 ## Documentation
 Commands are primarily sourced from https://github.com/junegunn/fzf/wiki/examples, with minor modifications.
 
@@ -70,7 +61,7 @@ function f_vim()      # Quick access files with fasd
 function f_chrome()   # Search chrome bookmarks
 ```
 
-## Dependencies
+## Requirements
 
 Automatically installed using brew in setup.sh
 
